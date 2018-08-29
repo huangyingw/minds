@@ -1,0 +1,24 @@
+[remote "Minds"]
+    url = git@github.com:Minds/minds.git
+    fetch = +refs/heads/*:refs/remotes/Minds/*
+[remote "github"]
+    url = git@github.com:huangyingw/minds.git
+    fetch = +refs/heads/*:refs/remotes/github/*
+[push]
+    remote = github
+[gsync]
+    remote = Minds
+    branch = master
+[merge]
+	allow = true
+[branch "dev"]
+    remote = github
+    merge = refs/heads/dev
+[branch "master"]
+    remote = Minds
+    merge = refs/heads/master
+[commit]
+	message = n
+[vrun]
+	silent = false
+	async = false
