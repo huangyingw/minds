@@ -10,7 +10,7 @@
     remote = Minds
     branch = master
 [merge]
-	allow = true
+    allow = true
 [branch "dev"]
     remote = github
     merge = refs/heads/dev
@@ -18,7 +18,9 @@
     remote = Minds
     merge = refs/heads/master
 [commit]
-	message = n
+    message = n
 [vrun]
-	silent = false
-	async = false
+    silent = false
+    async = false
+[deploy]
+    target = mini:~/myproject/git/ossn/Minds/minds
