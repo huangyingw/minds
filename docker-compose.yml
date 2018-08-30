@@ -8,7 +8,6 @@ services:
       - CASSANDRA_START_RPC=true
     networks:
       - app
-    mem_limit: 4048MB
     volumes:
       - "./cassandra:/var/lib/cassandra:cached"
       - "./logs:/var/log"
