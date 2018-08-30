@@ -23,4 +23,5 @@
     silent = false
     async = false
 [deploy]
-    target = mini:~/myproject/git/ossn/Minds/minds
+    host = mini
+    path = ~/myproject/git/ossn/Minds/minds

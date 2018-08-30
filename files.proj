@@ -18693,4 +18693,4 @@
 "./plugins/oauth2/views/default/object/oauth2_client.php"
 "./prunefile.conf"
 "./prunefix.conf"
-"./run.sh"
+"./run.rsh"
