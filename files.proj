@@ -1346,6 +1346,7 @@
 "./errors/502.html"
 "./errors/503.html"
 "./errors/style.css"
+"./files.rev"
 "./front/.angular-cli.json"
 "./front/.drone.yml"
 "./front/.git/config"
@@ -2534,3 +2535,4 @@
 "./sockets/src/server.ts"
 "./sockets/tsconfig.json"
 "./sockets/tsd.json"
+"./var/log/installer.log"
