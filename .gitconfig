@@ -20,7 +20,7 @@
 [commit]
     message = n
 [vrun]
-    silent = false
+    silent = true
     async = false
 [deploy]
     host = mini
