@@ -9,8 +9,8 @@ services:
     networks:
       - app
     volumes:
-      - "./cassandra:/var/lib/cassandra:cached"
-      - "./logs:/var/log"
+      - "./cassandra/:/var/lib/cassandra:cached"
+      - "./var/log/:/var/log/"
 
   mongo:
     image: mongo:3.4
@@ -103,6 +103,7 @@ services:
     volumes:
       - "./engine/:/var/www/Minds/engine"
       - "./front/:/var/www/Minds/front"
+      - "./var/log/:/var/log/"
 
   front-build:
     image: markharding/minds-front-base

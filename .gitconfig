@@ -20,8 +20,8 @@
 [commit]
     message = n
 [vrun]
-    silent = true
+    silent = false
     async = false
 [deploy]
-    host = mini
+    host = localhost
     path = ~/myproject/git/ossn/Minds/minds
