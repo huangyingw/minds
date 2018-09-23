@@ -49,6 +49,7 @@
 "./docker-compose.yml"
 "./engine/.drone.yml"
 "./engine/.git/config"
+"./engine/.gitconfig"
 "./engine/.gitignore"
 "./engine/.php_cs"
 "./engine/Api/Exportable.php"
