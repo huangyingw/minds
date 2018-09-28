@@ -31,6 +31,7 @@
 "./bin/setup-elastic.sh"
 "./bin/upgrades/11.php"
 "./bin/warehouse.php"
+"./composer-setup.php"
 "./conf/nginx-site.conf"
 "./conf/nginx.conf"
 "./containers/ecs-update/Dockerfile"
