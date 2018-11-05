@@ -25,3 +25,7 @@
 [deploy]
     host = server
     path = ~/myproject/git/ossn/Minds/minds
+[gdif]
+    ignore = composer-setup.php
+    ignore = files.rev
+    ignore = run.rsh
