@@ -1,13 +1,13 @@
-[remote "Minds"]
+[remote "origin"]
     url = git@github.com:Minds/minds.git
-    fetch = +refs/heads/*:refs/remotes/Minds/*
+    fetch = +refs/heads/*:refs/remotes/origin/*
 [remote "github"]
     url = git@github.com:huangyingw/minds.git
     fetch = +refs/heads/*:refs/remotes/github/*
 [push]
     remote = github
 [gsync]
-    remote = Minds
+    remote = origin
     branch = master
 [merge]
     allow = true
@@ -15,7 +15,7 @@
     remote = github
     merge = refs/heads/dev
 [branch "master"]
-    remote = Minds
+    remote = origin
     merge = refs/heads/master
 [commit]
     message = n
