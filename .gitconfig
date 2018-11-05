@@ -23,5 +23,5 @@
     silent = false
     async = false
 [deploy]
-    host = localhost
+    host = server
     path = ~/myproject/git/ossn/Minds/minds
