@@ -33,5 +33,4 @@ var/
 cassandra/
 logs/
 
-!.data
-
+.data
