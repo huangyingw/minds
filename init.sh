@@ -4,5 +4,5 @@
 git pull
 
 # Setup the other repos
-git clone https://github.com/Minds/front front
-git clone https://github.com/Minds/engine engine
+git clone https://github.com/minds/front front
+git clone https://github.com/minds/engine engine
