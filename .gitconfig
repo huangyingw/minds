@@ -1,5 +1,5 @@
 [remote "origin"]
-    url = git@github.com:Minds/minds.git
+    url = git@gitlab.com:minds/minds.git
     fetch = +refs/heads/*:refs/remotes/origin/*
 [remote "github"]
     url = git@github.com:huangyingw/minds.git
