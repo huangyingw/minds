@@ -3,11 +3,8 @@ SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 cd "$SCRIPTPATH"
 
-#service docker start
-#docker-compose exec cassandra nodetool enablethrift
-#    && docker-compose exec cassandra nodetool enablethrift \
-    #    && rm engine/settings.php
-#docker-compose exec cassandra nodetool enablethrift
-rm engine/settings.php \
-    ; docker-compose up installer
-#&& docker-compose up front-build
+docker-compose build
+docker-compose up -d nginx
+rm -fr .data/ ; \
+    rm engine/settings.php ; \
+    docker-compose up installer
