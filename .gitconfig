@@ -23,9 +23,11 @@
     silent = false
     async = false
 [deploy]
-    host = server
+    host = mini
     path = ~/myproject/git/ossn/Minds/minds
 [gdif]
+    ignore = ./Minds-Install.sh
+    ignore = ./var/log/containner.log
     ignore = composer-setup.php
     ignore = files.rev
     ignore = run.rsh
