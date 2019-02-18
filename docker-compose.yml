@@ -58,7 +58,7 @@ services:
   php-fpm:
     build:
       context: ./engine
-      dockerfile: ./containers/php-fpm/Dockerfile
+      dockerfile: ./containers/php-fpm/Dockerfile.dev
     mem_limit: 512MB
     depends_on:
       - cassandra
@@ -107,6 +107,7 @@ services:
     volumes:
       ## The following is for development environments only. Comment out on production. ##
       - "./front/:/var/www/Minds/front"
+      - "./var/log/nginx/:/var/log/nginx"
 
   installer:
     build:
