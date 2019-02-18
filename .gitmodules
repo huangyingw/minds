@@ -1,9 +1,3 @@
-[submodule "engine"]
-	path = engine
-	url = https://github.com/minds/engine
-[submodule "front"]
-	path = front
-	url = https://github.com/minds/front
 [submodule "sockets"]
 	path = sockets
 	url = https://github.com/minds/sockets.git 
