@@ -1573,6 +1573,7 @@
 "./files.rev"
 "./front/.angular-cli.json"
 "./front/.drone.yml"
+"./front/.gitconfig"
 "./front/.gitignore"
 "./front/LICENSE.md"
 "./front/README.md"
