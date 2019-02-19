@@ -2846,6 +2846,7 @@
 "./prunefile.conf"
 "./prunefix.conf"
 "./run.rsh"
+"./sockets/.gitconfig"
 "./sockets/LICENSE"
 "./sockets/README.md"
 "./sockets/config.ts"
