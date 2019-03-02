@@ -130,7 +130,9 @@ services:
         condition: service_healthy
 
   front-build:
-    image: markharding/minds-front-base
+    build:
+      context: ./front
+      dockerfile: ./containers/base/Dockerfile
     networks:
       - app
     entrypoint: 
