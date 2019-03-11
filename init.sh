@@ -4,5 +4,5 @@
 git pull
 
 # Setup the other repos
-git clone https://gitlab.com/Minds/front front
-git clone https://gitlab.com/Minds/engine engine
+git clone -b dev git@github.com:huangyingw/front.git  front
+git clone -b dev git@github.com:huangyingw/engine.git  engine
