@@ -31,3 +31,4 @@
     ignore = composer-setup.php
     ignore = files.rev
     ignore = run.rsh
+    ignore = run.sh
