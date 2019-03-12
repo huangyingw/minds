@@ -29,6 +29,9 @@
     ignore = ./Minds-Install.sh
     ignore = ./var/log/containner.log
     ignore = composer-setup.php
+    ignore = engine
     ignore = files.rev
+    ignore = front
+    ignore = init.sh
     ignore = run.rsh
     ignore = run.sh
