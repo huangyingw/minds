@@ -28,6 +28,7 @@
 [gdif]
     ignore = ./Minds-Install.sh
     ignore = ./var/log/containner.log
+    ignore = .gitmodules
     ignore = composer-setup.php
     ignore = engine
     ignore = files.rev
@@ -35,3 +36,4 @@
     ignore = init.sh
     ignore = run.rsh
     ignore = run.sh
+    ignore = sockets
