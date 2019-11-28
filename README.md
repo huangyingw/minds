@@ -6,10 +6,10 @@ Minds is an open-source, encrypted and reward-based social networking platform. 
 
 Minds is split into multiple repositories:
 
-- [Engine](https://github.com/Minds/engine) - Backend code & APIs
-- [Front](https://github.com/Minds/front) - Client side Angular2 web app
-- [Sockets](https://github.com/Minds/sockets) - WebSocket server for real-time communication
-- [Mobile](https://github.com/Minds/mobile-native) - React Native mobile apps
+- [Engine](https://gitlab.com/minds/engine) - Backend code & APIs
+- [Front](https://gitlab.com/minds/front) - Client side Angular2 web app
+- [Sockets](https://gitlab.com/minds/sockets) - WebSocket server for real-time communication
+- [Mobile](https://gitlab.com/minds/mobile-native) - React Native mobile apps
 
 
 ## Development System Requirements
@@ -22,20 +22,32 @@ Minds is split into multiple repositories:
 
 **Enabling full installation**
 
-By default, we try not to eat your machine by running the full stack. You'll be able to run the app, but you won't have search and indexing. If you need everthing, be sure to uncomment the ```depends_on``` services in
+### Setting up elasticsearch
 
-* runners
-* php-fpm
+** Linux users **
+To get elasticsearch 6 to run, you must make a settings change on the host machine.
 
-Then you can run:
+Run ```sudo sysctl -w vm.max_map_count=262144```
+
+To make it permanent, modify the variable in /etc/sysctl.conf
+
+#### Build the elasticsearch indexes
+
+1. Make sure nothing is running: `docker-compose down`
+2. Run the legacy provisioner: `docker-compose up elasticsearch-legacy-provisioner`
+3. Run the legacy provisioner: `docker-compose up elasticsearch-provisioner`
+
+### Running the stack the first time
 
 1. Run `sh init.sh` in order to install the front and engine repositories
 2. Run `docker-compose up -d nginx`
 3. Run `docker-compose up installer` (one time only.. initial username: minds / password: Pa$$w0rd)
 4. Run `docker-compose up front-build` 
 5. Navigate to `http://localhost:8080`
+6. Run `docker-compose up sync-engine`to sync engine
+7. Run `docker-compose up sync-front` 
 
-### Troubleshooting
+# Troubleshooting
 
 - Minds is already installed
   - Ensure engine/settings.php does not exist and re-run `docker-compose up installer`

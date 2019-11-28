@@ -6,39 +6,51 @@ services:
     image: cassandra:3.11.1
     environment:
       - CASSANDRA_START_RPC=true
-      - MAX_HEAP_SIZE=256M
-      - HEAP_NEWSIZE=32M
+      - MAX_HEAP_SIZE=768M
+      - HEAP_NEWSIZE=512M
     networks:
       - app
     mem_limit: 1024MB
     volumes:
-      - "./.data/cassandra:/var/lib/cassandra"
+      - cassandra-data:/var/lib/cassandra:delegated
     healthcheck:
       test: "cqlsh -e 'DESC TABLE system.batches'"
       retries: 10
       timeout: 5s
       interval: 15s
 
-  cockroachdb:
-    image: cockroachdb/cockroach
-    command: start --insecure
-    networks:
-        - app
-    volumes:
-      - ./.data/cockroachdb:/cockroach/cockroach-data
-
   mongo:
     image: mongo:3.4
     networks:
       - app
 
-  elasticsearch:
+  elasticsearch-legacy:
     image: elasticsearch:5.6-alpine
+    entrypoint: /clear-data-and-start.sh
+    environment: 
+      - "xpack.security.enabled=false"
+      - "http.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
+    networks:
+      - app
+    ports: 
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data:delegated
+      - ./containers/elasticsearch-legacy/clear-data-and-start.sh:/clear-data-and-start.sh
+
+  elasticsearch:
+    image: elasticsearch:6.6.2
+    entrypoint: /set-permissions-and-start.sh
     mem_limit: 512MB # keep an eye
     ulimits:
+      nproc: 65536
       memlock:
-        soft: -1
-        hard: -1
+        soft: 65536
+        hard: 65536
+      nofile:
+        soft: 65536
+        hard: 65536
     environment:
       - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
     networks:
@@ -46,7 +58,19 @@ services:
     ports:
       - "9200:9200"
     volumes:
-      - ./.data/elasticsearch:/usr/share/elasticsearch/data
+      - ./containers/elasticsearch/set-permissions-and-start.sh:/set-permissions-and-start.sh
+      - elasticsearch-data:/usr/share/elasticsearch/data:delegated
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.6.2
+    depends_on:
+      - elasticsearch
+    environment:
+      ELASTICSEARCH_URL: http://minds_elasticsearch_1:9200
+    networks:
+      - app
+    ports:
+      - "5601:5601"
 
   redis:
     image: redis:4.0-alpine
@@ -66,18 +90,18 @@ services:
     mem_limit: 512MB
     depends_on:
       - cassandra
-      - cockroachdb
-      #- mongo
-      #- elasticsearch
+      - mongo
+      - elasticsearch
       - rabbitmq
       - redis
+      - sync-engine
     networks:
       - app
     volumes:
       ## The following is for development environments only. Comment out on production. ##
-      - "./front/:/var/www/Minds/front"
-      - "./engine/:/var/www/Minds/engine"
-      - "./.dev/:/.dev/"
+      - ./front/:/var/www/Minds/front:delegated
+      - engine-dir:/var/www/Minds/engine
+      - keys:/.dev
 
   runners:
     build:
@@ -85,17 +109,17 @@ services:
       dockerfile: ./containers/php-runners/Dockerfile
     depends_on:
       - cassandra
-    #  - mongo
-    #  - elasticsearch
-    #  - rabbitmq
+      - mongo
+      - elasticsearch
+      - rabbitmq
       - redis
     networks:
       - app
     volumes:
-      - "./front/:/var/www/Minds/front:cached"
+      - ./front/:/var/www/Minds/front:delegated
       - "./plugins/:/var/www/Minds/plugins"
       - "./languages/:/var/www/Minds/languages"
-      - "./engine/:/var/www/Minds/engine"
+      - engine-dir:/var/www/Minds/engine:delegated
 
   nginx:
     build:
@@ -109,9 +133,21 @@ services:
     networks:
       - app
     volumes:
-      ## The following is for development environments only. Comment out on production. ##
-      - "./front/:/var/www/Minds/front"
-      - "./var/log/nginx/:/var/log/nginx"
+      - ./front/:/var/www/Minds/front:delegated
+
+  sync-engine:
+    build:
+      context: ./containers/alpine-rsync
+    command: [
+      'watch',
+      '-n5',
+      'rsync -avz --no-perms --progress /engine-dir-host/ /engine-dir/ --exclude .git'
+    ]
+    networks:
+      - app
+    volumes:
+      - engine-dir:/engine-dir
+      - ./engine:/engine-dir-host
 
   installer:
     build:
@@ -122,25 +158,56 @@ services:
     volumes:
       - "./engine/:/var/www/Minds/engine"
       - "./front/:/var/www/Minds/front"
-      - "./.dev/:/.dev/"
+      - keys:/.dev:delegated
       - "./var/log/:/var/log/"
     command: /bin/sh -c "./install.sh 2>&1 | tee /var/log/containner.log"
     depends_on:
       cassandra:
         condition: service_healthy
 
-  front-build:
+  elasticsearch-legacy-provisioner:
     build:
-      context: ./front
-      dockerfile: ./containers/base/Dockerfile
+      context:
+          ./containers/elasticsearch-provisioner
+    entrypoint: sh /provisioner/provision-elasticsearch-legacy.sh
     networks:
       - app
-    entrypoint: 
-      - sh
-      - -c
-      - "cd /var/www/Minds/front && echo 'Building frontend, please wait...(this can take a long time)' && npm install && npm run postinstall && npm rebuild node-sass && npm run build-dev && touch /var/www/Minds/front/dist/index.php"
+    depends_on:
+      - elasticsearch-legacy
     volumes:
-      - "./front/:/var/www/Minds/front"
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  elasticsearch-provisioner:
+    build:
+      context:
+        ./containers/elasticsearch-provisioner
+    networks:
+      - app
+    depends_on:
+      - elasticsearch
+
+  sockets:
+    image: minds/sockets
+    environment:
+      - PORT=3030
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=<!!! set this to jwt-token in your engine/settings.php !!!>
+      - CASSANDRA_SERVERS=cassandra
+      - CASSANDRA_KEYSPACE=minds
+    networks:
+      - app
+    depends_on:
+      - redis
+      - cassandra
+    ports:
+      - 8010:3030
+
+volumes:
+  cassandra-data:
+  elasticsearch-data:
+  keys:
+  engine-dir:
 
 networks:
   app:
