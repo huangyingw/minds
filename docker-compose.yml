@@ -186,6 +186,19 @@ services:
     depends_on:
       - elasticsearch
 
+  front-build:
+    build:
+      context:
+          ./front/containers/base
+    networks:
+      - app
+    entrypoint: 
+      - sh
+      - -c
+      - "cd /var/www/Minds/front && echo 'Building frontend, please wait...(this can take a long time)' && npm install && npm run postinstall && npm rebuild node-sass && npm run build-dev && touch /var/www/Minds/front/dist/index.php"
+    volumes:
+      - "./front/:/var/www/Minds/front"
+
   sockets:
     image: minds/sockets
     environment:
