@@ -23,7 +23,7 @@
     silent = false
     async = false
 [deploy]
-    host = mini
+    host = server
     path = ~/myproject/git/ossn/Minds/minds
 [gdif]
     ignore = ./Minds-Install.sh
