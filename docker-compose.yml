@@ -1,7 +1,82 @@
-# Using v2.2 because v3+ is meant for swarm operations
+# Main docker-compose
+# Suited for containerized SSR server.
 version: "2.2"
 
 services:
+
+  ## WEB SERVER / GATEWAY
+
+  nginx:
+    build:
+      context: ./containers/nginx
+      dockerfile: ./Dockerfile.dev-ssr
+    mem_limit: 512MB
+    depends_on:
+      - php-fpm
+    networks:
+      - app
+    ports:
+      - "8080:80"
+    environment:
+      - UPSTREAM_ENDPOINT
+    volumes:
+      - ./front/:/var/www/Minds/front:cached
+
+  ## APP ENGINE
+
+  php-fpm:
+    build:
+      context: ./engine
+      dockerfile: ./containers/php-fpm/Dockerfile.dev
+    mem_limit: 512MB
+    depends_on:
+      - cassandra
+      - mongo
+      - elasticsearch
+      - rabbitmq
+      - redis
+    networks:
+      - app
+    volumes:
+      - ./front/:/var/www/Minds/front:cached
+      - ./engine/:/var/www/Minds/engine:cached
+      - keys:/.dev
+
+  runners:
+    build:
+      context: ./engine
+      dockerfile: ./containers/php-runners/Dockerfile
+    depends_on:
+      - cassandra
+      - elasticsearch
+      - rabbitmq
+      - redis
+    networks:
+      - app
+    volumes:
+      - ./front/:/var/www/Minds/front:cached
+      - ./engine/:/var/www/Minds/engine:cached
+      - keys:/.dev
+
+  sockets:
+    image: minds/sockets
+    environment:
+      - PORT=3030
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=<!!! set this to jwt-token in your engine/settings.php !!!>
+      - CASSANDRA_SERVERS=cassandra
+      - CASSANDRA_KEYSPACE=minds
+    networks:
+      - app
+    depends_on:
+      - redis
+      - cassandra
+    ports:
+      - 8010:3030
+
+  ## DATABASES
+
   cassandra:
     image: cassandra:3.11.1
     environment:
@@ -12,7 +87,7 @@ services:
       - app
     mem_limit: 1024MB
     volumes:
-      - cassandra-data:/var/lib/cassandra:delegated
+      - cassandra-data:/var/lib/cassandra
     healthcheck:
       test: "cqlsh -e 'DESC TABLE system.batches'"
       retries: 10
@@ -23,21 +98,6 @@ services:
     image: mongo:3.4
     networks:
       - app
-
-  elasticsearch-legacy:
-    image: elasticsearch:5.6-alpine
-    entrypoint: /clear-data-and-start.sh
-    environment: 
-      - "xpack.security.enabled=false"
-      - "http.host=0.0.0.0"
-      - "transport.host=127.0.0.1"
-    networks:
-      - app
-    ports: 
-      - "9200:9200"
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data:delegated
-      - ./containers/elasticsearch-legacy/clear-data-and-start.sh:/clear-data-and-start.sh
 
   elasticsearch:
     image: elasticsearch:6.6.2
@@ -58,19 +118,10 @@ services:
     ports:
       - "9200:9200"
     volumes:
-      - ./containers/elasticsearch/set-permissions-and-start.sh:/set-permissions-and-start.sh
-      - elasticsearch-data:/usr/share/elasticsearch/data:delegated
+      - ./containers/elasticsearch/set-permissions-and-start.sh:/set-permissions-and-start.sh:cached
+      - elasticsearch-data:/usr/share/elasticsearch/data
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana-oss:6.6.2
-    depends_on:
-      - elasticsearch
-    environment:
-      ELASTICSEARCH_URL: http://minds_elasticsearch_1:9200
-    networks:
-      - app
-    ports:
-      - "5601:5601"
+  ## CACHE
 
   redis:
     image: redis:4.0-alpine
@@ -78,76 +129,14 @@ services:
     networks:
       - app
 
+  ## QUEUE
+
   rabbitmq:
     image: rabbitmq:3.6-alpine
     networks:
       - app
 
-  php-fpm:
-    build:
-      context: ./engine
-      dockerfile: ./containers/php-fpm/Dockerfile.dev
-    mem_limit: 512MB
-    depends_on:
-      - cassandra
-      - mongo
-      - elasticsearch
-      - rabbitmq
-      - redis
-      - sync-engine
-    networks:
-      - app
-    volumes:
-      ## The following is for development environments only. Comment out on production. ##
-      - ./front/:/var/www/Minds/front:delegated
-      - engine-dir:/var/www/Minds/engine
-      - keys:/.dev
-
-  runners:
-    build:
-      context: ./engine
-      dockerfile: ./containers/php-runners/Dockerfile
-    depends_on:
-      - cassandra
-      - mongo
-      - elasticsearch
-      - rabbitmq
-      - redis
-    networks:
-      - app
-    volumes:
-      - ./front/:/var/www/Minds/front:delegated
-      - "./plugins/:/var/www/Minds/plugins"
-      - "./languages/:/var/www/Minds/languages"
-      - engine-dir:/var/www/Minds/engine:delegated
-
-  nginx:
-    build:
-      context: ./containers/nginx
-      dockerfile: ./Dockerfile.dev
-    mem_limit: 512MB
-    depends_on:
-      - php-fpm
-    ports:
-      - "8080:80"
-    networks:
-      - app
-    volumes:
-      - ./front/:/var/www/Minds/front:delegated
-
-  sync-engine:
-    build:
-      context: ./containers/alpine-rsync
-    command: [
-      'watch',
-      '-n5',
-      'rsync -avz --no-perms --progress /engine-dir-host/ /engine-dir/ --exclude .git'
-    ]
-    networks:
-      - app
-    volumes:
-      - engine-dir:/engine-dir
-      - ./engine:/engine-dir-host
+  ## INSTALLATION ARTIFACTS
 
   installer:
     build:
@@ -156,20 +145,34 @@ services:
     networks:
       - app
     volumes:
-      - "./engine/:/var/www/Minds/engine"
-      - "./front/:/var/www/Minds/front"
-      - keys:/.dev:delegated
-      - "./var/log/:/var/log/"
-    command: /bin/sh -c "./install.sh 2>&1 | tee /var/log/containner.log"
+      - ./front/:/var/www/Minds/front:delegated
+      - ./engine/:/var/www/Minds/engine:delegated
+      - keys:/.dev
     depends_on:
       cassandra:
         condition: service_healthy
 
+  elasticsearch-legacy:
+    image: elasticsearch:5.6-alpine
+    entrypoint: /clear-data-and-start.sh
+    environment:
+      - "xpack.security.enabled=false"
+      - "http.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
+    networks:
+      - app
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./containers/elasticsearch-legacy/clear-data-and-start.sh:/clear-data-and-start.sh:cached
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - "./var/log/:/var/log/"
+    command: /bin/sh -c "./install.sh 2>&1 | tee /var/log/containner.log"
+
   elasticsearch-legacy-provisioner:
     build:
-      context:
-          ./containers/elasticsearch-provisioner
-    entrypoint: sh /provisioner/provision-elasticsearch-legacy.sh
+      context: ./containers/elasticsearch-provisioner
+    entrypoint: sh /provisioner/provision-elasticsearch-legacy.sh elasticsearch-legacy
     networks:
       - app
     depends_on:
@@ -179,8 +182,7 @@ services:
 
   elasticsearch-provisioner:
     build:
-      context:
-        ./containers/elasticsearch-provisioner
+      context: ./containers/elasticsearch-provisioner
     networks:
       - app
     depends_on:
@@ -199,28 +201,23 @@ services:
     volumes:
       - "./front/:/var/www/Minds/front"
 
-  sockets:
-    image: minds/sockets
+  ## UTILITIES
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.6.2
+    depends_on:
+      - elasticsearch
     environment:
-      - PORT=3030
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - JWT_SECRET=<!!! set this to jwt-token in your engine/settings.php !!!>
-      - CASSANDRA_SERVERS=cassandra
-      - CASSANDRA_KEYSPACE=minds
+      ELASTICSEARCH_URL: http://minds_elasticsearch_1:9200
     networks:
       - app
-    depends_on:
-      - redis
-      - cassandra
     ports:
-      - 8010:3030
+      - "5601:5601"
 
 volumes:
   cassandra-data:
   elasticsearch-data:
   keys:
-  engine-dir:
 
 networks:
   app:
