@@ -166,8 +166,6 @@ services:
     volumes:
       - ./containers/elasticsearch-legacy/clear-data-and-start.sh:/clear-data-and-start.sh:cached
       - elasticsearch-data:/usr/share/elasticsearch/data
-      - "./var/log/:/var/log/"
-    command: /bin/sh -c "./install.sh 2>&1 | tee /var/log/containner.log"
 
   elasticsearch-legacy-provisioner:
     build:
@@ -187,19 +185,6 @@ services:
       - app
     depends_on:
       - elasticsearch
-
-  front-build:
-    build:
-      context:
-          ./front/containers/base
-    networks:
-      - app
-    entrypoint: 
-      - sh
-      - -c
-      - "cd /var/www/Minds/front && echo 'Building frontend, please wait...(this can take a long time)' && npm install && npm run postinstall && npm rebuild node-sass && npm run build-dev && touch /var/www/Minds/front/dist/index.php"
-    volumes:
-      - "./front/:/var/www/Minds/front"
 
   ## UTILITIES
 
