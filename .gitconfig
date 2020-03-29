@@ -29,7 +29,6 @@
     ignore = ./Minds-Install.sh
     ignore = ./var/log/containner.log
     ignore = .gitignore
-    ignore = .gitmodules
     ignore = composer-setup.php
     ignore = dev.gdio.diff
     ignore = engine
