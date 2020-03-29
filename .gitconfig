@@ -31,6 +31,7 @@
     ignore = .gitignore
     ignore = .gitmodules
     ignore = composer-setup.php
+    ignore = dev.gdio.diff
     ignore = engine
     ignore = files.rev
     ignore = front
