@@ -14,23 +14,6 @@ module.exports.handler = async argv => {
     console.log('\nWARNING: Close any tool that might be watching Minds folder (e.g. VSCode, TortoiseGit, etc.)\n');
   }
 
-  const prompt = await prompts([
-    {
-      type: 'toggle',
-      name: 'confirm',
-      message: 'This will WIPE your local stack, if exists. Proceed?',
-      active: 'Yes',
-      inactive: 'No'
-    }
-  ]);
-
-  console.log('');
-
-  if (!prompt.confirm) {
-    console.log('Cancelled by user');
-    process.exit(1);
-  }
-
   const tasks = new Listr([
     require('../tasks/stop'),
     require('../tasks/cleanup'),
