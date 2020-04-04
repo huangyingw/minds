@@ -36,6 +36,7 @@
     ignore = files.rev
     ignore = front
     ignore = init.sh
+    ignore = install.sh
     ignore = run.rsh
     ignore = run.sh
     ignore = sockets
