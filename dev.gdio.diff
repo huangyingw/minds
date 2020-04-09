@@ -17,3 +17,42 @@ index 7bc2effd3..50737f864 100644
 -	path = sockets
 -	url = https://github.com/minds/sockets.git 
 +	url = git@github.com:huangyingw/front.git
+diff --git a/local/commands/install.js b/local/commands/install.js
+index 6c28c8069..a4d98b2ae 100644
+--- ./local/commands/install.js
++++ ./local/commands/install.js
+@@ -14,23 +14,6 @@ module.exports.handler = async argv => {
+     console.log('\nWARNING: Close any tool that might be watching Minds folder (e.g. VSCode, TortoiseGit, etc.)\n');
+   }
+ 
+-  const prompt = await prompts([
+-    {
+-      type: 'toggle',
+-      name: 'confirm',
+-      message: 'This will WIPE your local stack, if exists. Proceed?',
+-      active: 'Yes',
+-      inactive: 'No'
+-    }
+-  ]);
+-
+-  console.log('');
+-
+-  if (!prompt.confirm) {
+-    console.log('Cancelled by user');
+-    process.exit(1);
+-  }
+-
+   const tasks = new Listr([
+     require('../tasks/stop'),
+     require('../tasks/cleanup'),
+diff --git a/local/tasks/build-containers.js b/local/tasks/build-containers.js
+index 3bfad8d0e..036a2ae3f 100644
+--- ./local/tasks/build-containers.js
++++ ./local/tasks/build-containers.js
+@@ -2,5 +2,5 @@ const doco = require('../lib/doco');
+ 
+ module.exports = {
+   title: 'Building containers',
+-  task: () => doco('build', '--no-cache')
++  task: () => doco('build')
+ };
