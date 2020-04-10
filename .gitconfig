@@ -27,6 +27,7 @@
     path = ~/myproject/git/ossn/Minds/minds
 [gdif]
     ignore = ./Minds-Install.sh
+    ignore = ./etc/sysctl.conf 
     ignore = ./var/log/containner.log
     ignore = .gitignore
     ignore = composer-setup.php
