@@ -24,12 +24,19 @@ services:
 
   ## APP ENGINE
 
+  minds_php:
+    build:
+      context: ./engine
+      dockerfile: ./containers/php/Dockerfile 
+    image: minds/php:7.3
+
   php-fpm:
     build:
       context: ./engine
       dockerfile: ./containers/php-fpm/Dockerfile.dev
     mem_limit: 512MB
     depends_on:
+      - minds_php
       - cassandra
       - mongo
       - elasticsearch
@@ -47,6 +54,7 @@ services:
       context: ./engine
       dockerfile: ./containers/php-runners/Dockerfile
     depends_on:
+      - minds_php
       - cassandra
       - elasticsearch
       - rabbitmq
@@ -149,8 +157,8 @@ services:
       - ./engine/:/var/www/Minds/engine:delegated
       - keys:/.dev
     depends_on:
-      cassandra:
-        condition: service_healthy
+        - cassandra
+        - minds_php
 
   elasticsearch-legacy:
     image: elasticsearch:5.6-alpine
