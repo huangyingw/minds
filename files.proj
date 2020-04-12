@@ -37,7 +37,6 @@
 "./bin/setup-elastic.sh"
 "./bin/upgrades/11.php"
 "./bin/warehouse.php"
-"./build.sh"
 "./composer-setup.php"
 "./containers/alpine-rsync/Dockerfile"
 "./containers/ecs-update/Dockerfile"
