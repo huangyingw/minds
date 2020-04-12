@@ -17,6 +17,59 @@ index 7bc2effd3..50737f864 100644
 -	path = sockets
 -	url = https://github.com/minds/sockets.git 
 +	url = git@github.com:huangyingw/front.git
+diff --git a/docker-compose.with-phpspec.yml b/docker-compose.with-phpspec.yml
+index df5b038c1..c5b2f1415 100644
+--- ./docker-compose.with-phpspec.yml
++++ ./docker-compose.with-phpspec.yml
+@@ -11,3 +11,5 @@ services:
+       - keys:/.dev
+     networks:
+       - app
++    depends_on:
++      - minds_php
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 6efe4a908..fd9cc9b39 100644
+--- ./docker-compose.yml
++++ ./docker-compose.yml
+@@ -24,12 +24,19 @@ services:
+ 
+   ## APP ENGINE
+ 
++  minds_php:
++    build:
++      context: ./engine
++      dockerfile: ./containers/php/Dockerfile 
++    image: minds/php:7.3
++
+   php-fpm:
+     build:
+       context: ./engine
+       dockerfile: ./containers/php-fpm/Dockerfile.dev
+     mem_limit: 512MB
+     depends_on:
++      - minds_php
+       - cassandra
+       - mongo
+       - elasticsearch
+@@ -47,6 +54,7 @@ services:
+       context: ./engine
+       dockerfile: ./containers/php-runners/Dockerfile
+     depends_on:
++      - minds_php
+       - cassandra
+       - elasticsearch
+       - rabbitmq
+@@ -149,8 +157,8 @@ services:
+       - ./engine/:/var/www/Minds/engine:delegated
+       - keys:/.dev
+     depends_on:
+-      cassandra:
+-        condition: service_healthy
++        - cassandra
++        - minds_php
+ 
+   elasticsearch-legacy:
+     image: elasticsearch:5.6-alpine
 diff --git a/local/commands/install.js b/local/commands/install.js
 index 6c28c8069..a4d98b2ae 100644
 --- ./local/commands/install.js
