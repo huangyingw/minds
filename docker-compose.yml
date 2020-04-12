@@ -26,8 +26,7 @@ services:
 
   minds_php:
     build:
-      context: ./engine
-      dockerfile: ./containers/php/Dockerfile 
+      context: ./engine/containers/php
     image: minds/php:7.3
 
   php-fpm:
