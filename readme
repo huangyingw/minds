@@ -1,0 +1,396 @@
+some question about engine/containers/php/Dockerfile
+    What's $PHPIZE_DEPS? I could not find its definition anywhere.
+
+    If I directly build this file, I would get following error:
+
+        Sending build context to Docker daemon  14.34kB
+        Step 1/13 : FROM php:7.3-fpm-alpine3.10
+        ---> 5029e85b4814
+        Step 2/13 : RUN apk add --no-cache --virtual build-deps     libzip-dev     zlib-dev     freetype-dev     libjpeg-turbo-dev     libpng-dev     $PHPIZE_DEPS     && apk add --no-cache     libzip     coreutils     imagemagick     nodejs     npm     ffmpeg     && docker-php-ext-install -j$(nproc) bcmath     && docker-php-ext-install -j$(nproc) zip     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/     && docker-php-ext-install -j$(nproc) gd     && docker-php-ext-install -j$(nproc) exif     && docker-php-ext-install -j$(nproc) sockets     && apk del build-deps
+        ---> Using cache
+        ---> 48ae71079385
+        Step 3/13 : RUN apk add --no-cache --virtual build-deps     $PHPIZE_DEPS     imagemagick-dev     && pecl install mongodb     && pecl install redis     && pecl install apcu     && pecl install imagick     && docker-php-ext-enable mongodb     && docker-php-ext-enable redis     && docker-php-ext-enable apcu     && docker-php-ext-enable imagick     && apk del build-deps
+        ---> Using cache
+        ---> 1f06b0a3c9df
+        Step 4/13 : ENV MAKEFLAGS -j4
+        ---> Using cache
+        ---> 20f104410d2a
+        Step 5/13 : ENV INSTALL_DIR /usr/src/datastax-php-driver
+        ---> Using cache
+        ---> c83c199de20f
+        Step 6/13 : ENV BUILD_DEPS     bash     cmake     autoconf     g++     gcc     make     pcre-dev     libuv-dev     git     gmp-dev     autoconf     libtool     openssl-dev     zlib-dev     $PHPIZE_DEPS
+        ---> Using cache
+        ---> 5d6d52babb72
+        Step 7/13 : RUN apk add --no-cache --virtual build-deps $BUILD_DEPS     && apk add --no-cache libuv gmp     && git clone https://github.com/datastax/php-driver.git $INSTALL_DIR     && cd $INSTALL_DIR     && git submodule update --init     && cd ext && bash $INSTALL_DIR/ext/install.sh     && docker-php-ext-enable cassandra     && apk del build-deps     && rm -rf $INSTALL_DIR
+        ---> Running in d0168807ebe4
+        fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/main/x86_64/APKINDEX.tar.gz
+        fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/community/x86_64/APKINDEX.tar.gz
+        (1/45) Upgrading libcrypto1.1 (1.1.1d-r2 -> 1.1.1g-r0)
+        (2/45) Upgrading libssl1.1 (1.1.1d-r2 -> 1.1.1g-r0)
+        (3/45) Installing readline (8.0.0-r0)
+        (4/45) Installing bash (5.0.0-r0)
+        Executing bash-5.0.0-r0.post-install
+        (5/45) Installing lz4-libs (1.9.1-r1)
+        (6/45) Installing libarchive (3.3.3-r2)
+        (7/45) Installing rhash-libs (1.3.8-r0)
+        (8/45) Installing cmake (3.14.5-r0)
+        (9/45) Installing cmake-bash-completion (3.14.5-r0)
+        (10/45) Installing m4 (1.4.18-r1)
+        (11/45) Installing perl (5.28.2-r1)
+        (12/45) Installing autoconf (2.69-r2)
+        (13/45) Installing binutils (2.32-r0)
+        (14/45) Installing isl (0.18-r0)
+        (15/45) Installing libgomp (8.3.0-r0)
+        (16/45) Installing libatomic (8.3.0-r0)
+        (17/45) Installing mpfr3 (3.1.5-r1)
+        (18/45) Installing mpc1 (1.1.0-r0)
+        (19/45) Installing gcc (8.3.0-r0)
+        (20/45) Installing musl-dev (1.1.22-r3)
+        (21/45) Installing libc-dev (0.7.1-r0)
+        (22/45) Installing g++ (8.3.0-r0)
+        (23/45) Installing make (4.2.1-r2)
+        (24/45) Installing libpcre16 (8.43-r0)
+        (25/45) Installing libpcre32 (8.43-r0)
+        (26/45) Installing libpcrecpp (8.43-r0)
+        (27/45) Installing pkgconf (1.6.1-r1)
+        (28/45) Installing pcre-dev (8.43-r0)
+        (29/45) Installing libuv-dev (1.29.1-r0)
+        (30/45) Installing pcre2 (10.33-r0)
+        (31/45) Installing git (2.22.4-r0)
+        (32/45) Installing perl-error (0.17027-r0)
+        (33/45) Installing perl-git (2.22.4-r0)
+        (34/45) Installing git-perl (2.22.4-r0)
+        (35/45) Installing libgmpxx (6.1.2-r1)
+        (36/45) Installing gmp-dev (6.1.2-r1)
+        (37/45) Installing libtool (2.4.6-r6)
+        (38/45) Installing openssl-dev (1.1.1g-r0)
+        (39/45) Installing zlib-dev (1.2.11-r1)
+        (40/45) Installing dpkg-dev (1.19.7-r0)
+        (41/45) Installing dpkg (1.19.7-r0)
+        (42/45) Installing libmagic (5.37-r1)
+        (43/45) Installing file (5.37-r1)
+        (44/45) Installing re2c (1.1.1-r0)
+        (45/45) Installing build-deps (20200429.160829)
+        Executing busybox-1.30.1-r3.trigger
+        Executing ca-certificates-20190108-r0.trigger
+        OK: 455 MiB in 154 packages
+        fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/main/x86_64/APKINDEX.tar.gz
+        fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/community/x86_64/APKINDEX.tar.gz
+        OK: 455 MiB in 154 packages
+        [91mCloning into '/usr/src/datastax-php-driver'...
+        [0m[91mSubmodule 'lib/cpp-driver' (https://github.com/datastax/cpp-driver.git) registered for path 'lib/cpp-driver'
+        [0m[91mCloning into '/usr/src/datastax-php-driver/lib/cpp-driver'...
+        [0mSubmodule path 'lib/cpp-driver': checked out '2b3fb19e1ee28ac12ec9dde63a560511018b7195'
+        [91m+ rm -Rf /tmp/php-driver-installation
+        [0m[91m+ mkdir /tmp/php-driver-installation
+        [0m[91m+ pushd /tmp/php-driver-installation
+        + mkdir build
+        [0m/tmp/php-driver-installation /usr/src/datastax-php-driver/ext
+        [91m++ cd build
+        ++ pwd
+        [0m[91m+ builddir=/tmp/php-driver-installation/build
+        [0m[91m+ echo 'Compiling cpp-driver...'
+        + mkdir cpp-driver
+        [0mCompiling cpp-driver...
+        [91m+ pushd cpp-driver
+        [0m/tmp/php-driver-installation/cpp-driver /tmp/php-driver-installation /usr/src/datastax-php-driver/ext
+        [91m+ cmake -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_INSTALL_PREFIX:PATH=/tmp/php-driver-installation/build -DCASS_BUILD_STATIC=ON -DCASS_BUILD_SHARED=OFF -DCMAKE_BUILD_TYPE=RELEASE -DCASS_USE_ZLIB=ON -DCMAKE_INSTALL_LIBDIR:PATH=lib /usr/src/datastax-php-driver/ext/../lib/cpp-driver/
+        [0m-- The C compiler identification is GNU 8.3.0
+        -- The CXX compiler identification is GNU 8.3.0
+        -- Check for working C compiler: /usr/bin/cc
+        -- Check for working C compiler: /usr/bin/cc -- works
+        -- Detecting C compiler ABI info
+        -- Detecting C compiler ABI info - done
+        -- Detecting C compile features
+        -- Detecting C compile features - done
+        -- Check for working CXX compiler: /usr/bin/c++
+        -- Check for working CXX compiler: /usr/bin/c++ -- works
+        -- Detecting CXX compiler ABI info
+        -- Detecting CXX compiler ABI info - done
+        -- Detecting CXX compile features
+        -- Detecting CXX compile features - done
+        -- libuv version: v1.29.1
+        -- Found Libuv: /usr/lib/libuv.so (found suitable version "1.29.1", minimum required is "1.0.0") 
+        -- Looking for pthread.h
+        -- Looking for pthread.h - found
+        -- Looking for pthread_create
+        -- Looking for pthread_create - found
+        -- Found Threads: TRUE  
+        -- Found OpenSSL: /usr/lib/libssl.so (found version "1.1.1g") 
+        -- OpenSSL version: v1.1.1g
+        -- Found ZLIB: /lib/libz.so (found version "1.2.11") 
+        -- Could NOT find CLANG_FORMAT (missing: CLANG_FORMAT_EXE) 
+        -- Unable to find clang-format. Not creating format targets.
+        -- Driver version: 2.15.1
+        -- Using std::atomic implementation for atomic operations
+        -- Checking to see if CXX compiler accepts flag -std=c++11
+        -- Checking to see if CXX compiler accepts flag -std=c++11 - yes
+        -- Using hash header <functional> and namespace "std"
+        -- Looking for inttypes.h
+        -- Looking for inttypes.h - found
+        -- Looking for stdint.h
+        -- Looking for stdint.h - found
+        -- Looking for sys/types.h
+        -- Looking for sys/types.h - found
+        -- Looking for memcpy
+        -- Looking for memcpy - found
+        -- Looking for stddef.h
+        -- Looking for stddef.h - found
+        -- Check size of long long
+        -- Check size of long long - done
+        -- Check size of uint16_t
+        -- Check size of uint16_t - done
+        -- Check size of u_int16_t
+        -- Check size of u_int16_t - done
+        -- Check size of __uint16_t
+        -- Check size of __uint16_t - failed
+        -- Looking for GRND_NONBLOCK
+        -- Looking for GRND_NONBLOCK - not found
+        -- Looking for timerfd_create
+        -- Looking for timerfd_create - found
+        -- Looking for SO_NOSIGPIPE
+        -- Looking for SO_NOSIGPIPE - not found
+        -- Looking for sigtimedwait
+        -- Looking for sigtimedwait - found
+        -- Performing Test HAVE_BUILTIN_BSWAP32
+        -- Performing Test HAVE_BUILTIN_BSWAP32 - Success
+        -- Performing Test HAVE_BUILTIN_BSWAP64
+        -- Performing Test HAVE_BUILTIN_BSWAP64 - Failed
+        -- Found PkgConfig: /usr/bin/pkg-config (found version "1.6.1") 
+        -- Configuring done
+        -- Generating done
+        -- Build files have been written to: /tmp/php-driver-installation/cpp-driver
+        [91m+ make
+        [0mScanning dependencies of target minizip_static
+        Scanning dependencies of target curl_hostcheck_static
+        Scanning dependencies of target hdr_histogram_static
+        Scanning dependencies of target http-parser_static
+        [  1%] Building CXX object src/third_party/curl/CMakeFiles/curl_hostcheck_static.dir/hostcheck.cpp.o
+        [  2%] Building C object src/third_party/minizip/CMakeFiles/minizip_static.dir/ioapi.c.o
+        [  3%] Building CXX object src/third_party/hdr_histogram/CMakeFiles/hdr_histogram_static.dir/hdr_histogram.cpp.o
+        [  4%] Building C object src/third_party/http-parser/CMakeFiles/http-parser_static.dir/http_parser.c.o
+        [  5%] Building C object src/third_party/minizip/CMakeFiles/minizip_static.dir/unzip.c.o
+        [  5%] Built target curl_hostcheck_static
+        [  5%] Built target hdr_histogram_static
+        [  5%] Built target minizip_static
+        [  5%] Built target http-parser_static
+        Scanning dependencies of target cassandra_static
+        [  5%] Building CXX object src/CMakeFiles/cassandra_static.dir/abstract_data.cpp.o
+        [  6%] Building CXX object src/CMakeFiles/cassandra_static.dir/address.cpp.o
+        [  7%] Building CXX object src/CMakeFiles/cassandra_static.dir/address_factory.cpp.o
+        [  8%] Building CXX object src/CMakeFiles/cassandra_static.dir/allocated.cpp.o
+        [  9%] Building CXX object src/CMakeFiles/cassandra_static.dir/async.cpp.o
+        [  9%] Building CXX object src/CMakeFiles/cassandra_static.dir/auth.cpp.o
+        [ 10%] Building CXX object src/CMakeFiles/cassandra_static.dir/auth_requests.cpp.o
+        [ 11%] Building CXX object src/CMakeFiles/cassandra_static.dir/auth_responses.cpp.o
+        [ 12%] Building CXX object src/CMakeFiles/cassandra_static.dir/batch_request.cpp.o
+        [ 13%] Building CXX object src/CMakeFiles/cassandra_static.dir/blacklist_dc_policy.cpp.o
+        [ 13%] Building CXX object src/CMakeFiles/cassandra_static.dir/blacklist_policy.cpp.o
+        [ 14%] Building CXX object src/CMakeFiles/cassandra_static.dir/client_insights.cpp.o
+        [ 15%] Building CXX object src/CMakeFiles/cassandra_static.dir/cloud_secure_connection_config.cpp.o
+        [ 16%] Building CXX object src/CMakeFiles/cassandra_static.dir/cluster.cpp.o
+        [ 17%] Building CXX object src/CMakeFiles/cassandra_static.dir/cluster_config.cpp.o
+        [ 17%] Building CXX object src/CMakeFiles/cassandra_static.dir/cluster_connector.cpp.o
+        [ 18%] Building CXX object src/CMakeFiles/cassandra_static.dir/cluster_metadata_resolver.cpp.o
+        [ 19%] Building CXX object src/CMakeFiles/cassandra_static.dir/collection.cpp.o
+        [ 20%] Building CXX object src/CMakeFiles/cassandra_static.dir/collection_iterator.cpp.o
+        [ 21%] Building CXX object src/CMakeFiles/cassandra_static.dir/config.cpp.o
+        [ 21%] Building CXX object src/CMakeFiles/cassandra_static.dir/connection.cpp.o
+        [ 22%] Building CXX object src/CMakeFiles/cassandra_static.dir/connection_pool.cpp.o
+        [ 23%] Building CXX object src/CMakeFiles/cassandra_static.dir/connection_pool_connector.cpp.o
+        [ 24%] Building CXX object src/CMakeFiles/cassandra_static.dir/connection_pool_manager.cpp.o
+        [ 25%] Building CXX object src/CMakeFiles/cassandra_static.dir/connection_pool_manager_initializer.cpp.o
+        [ 25%] Building CXX object src/CMakeFiles/cassandra_static.dir/connector.cpp.o
+        [ 26%] Building CXX object src/CMakeFiles/cassandra_static.dir/control_connection.cpp.o
+        [ 27%] Building CXX object src/CMakeFiles/cassandra_static.dir/control_connector.cpp.o
+        [ 28%] Building CXX object src/CMakeFiles/cassandra_static.dir/data_type.cpp.o
+        [ 29%] Building CXX object src/CMakeFiles/cassandra_static.dir/data_type_parser.cpp.o
+        [ 30%] Building CXX object src/CMakeFiles/cassandra_static.dir/dc_aware_policy.cpp.o
+        [ 30%] Building CXX object src/CMakeFiles/cassandra_static.dir/decoder.cpp.o
+        [ 31%] Building CXX object src/CMakeFiles/cassandra_static.dir/delayed_connector.cpp.o
+        [ 32%] Building CXX object src/CMakeFiles/cassandra_static.dir/driver_info.cpp.o
+        [ 33%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_auth.cpp.o
+        [ 34%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_batch_request.cpp.o
+        [ 34%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_cluster_config.cpp.o
+        [ 35%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_collection.cpp.o
+        [ 36%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_date_range.cpp.o
+        [ 37%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_line_string.cpp.o
+        [ 38%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_point.cpp.o
+        [ 38%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_polygon.cpp.o
+        [ 39%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_statement.cpp.o
+        [ 40%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_tuple.cpp.o
+        [ 41%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_user_type_value.cpp.o
+        [ 42%] Building CXX object src/CMakeFiles/cassandra_static.dir/dse_value.cpp.o
+        [ 42%] Building CXX object src/CMakeFiles/cassandra_static.dir/encode.cpp.o
+        [ 43%] Building CXX object src/CMakeFiles/cassandra_static.dir/error_response.cpp.o
+        [ 44%] Building CXX object src/CMakeFiles/cassandra_static.dir/event_loop.cpp.o
+        [ 45%] Building CXX object src/CMakeFiles/cassandra_static.dir/event_response.cpp.o
+        [ 46%] Building CXX object src/CMakeFiles/cassandra_static.dir/execute_request.cpp.o
+        [ 46%] Building CXX object src/CMakeFiles/cassandra_static.dir/execution_profile.cpp.o
+        [ 47%] Building CXX object src/CMakeFiles/cassandra_static.dir/external.cpp.o
+        [ 48%] Building CXX object src/CMakeFiles/cassandra_static.dir/future.cpp.o
+        [ 49%] Building CXX object src/CMakeFiles/cassandra_static.dir/get_time-unix.cpp.o
+        [ 50%] Building CXX object src/CMakeFiles/cassandra_static.dir/host.cpp.o
+        [ 50%] Building CXX object src/CMakeFiles/cassandra_static.dir/http_client.cpp.o
+        [ 51%] Building CXX object src/CMakeFiles/cassandra_static.dir/iterator.cpp.o
+        [ 52%] Building CXX object src/CMakeFiles/cassandra_static.dir/latency_aware_policy.cpp.o
+        [ 53%] Building CXX object src/CMakeFiles/cassandra_static.dir/list_policy.cpp.o
+        [ 54%] Building CXX object src/CMakeFiles/cassandra_static.dir/logger.cpp.o
+        [ 55%] Building CXX object src/CMakeFiles/cassandra_static.dir/map_iterator.cpp.o
+        [ 55%] Building CXX object src/CMakeFiles/cassandra_static.dir/md5.cpp.o
+        [ 56%] Building CXX object src/CMakeFiles/cassandra_static.dir/memory.cpp.o
+        [ 57%] Building CXX object src/CMakeFiles/cassandra_static.dir/metadata.cpp.o
+        [ 58%] Building CXX object src/CMakeFiles/cassandra_static.dir/micro_timer.cpp.o
+        [ 59%] Building CXX object src/CMakeFiles/cassandra_static.dir/murmur3.cpp.o
+        [ 59%] Building CXX object src/CMakeFiles/cassandra_static.dir/pooled_connection.cpp.o
+        [ 60%] Building CXX object src/CMakeFiles/cassandra_static.dir/prepare_all_handler.cpp.o
+        [ 61%] Building CXX object src/CMakeFiles/cassandra_static.dir/prepare_host_handler.cpp.o
+        [ 62%] Building CXX object src/CMakeFiles/cassandra_static.dir/prepare_request.cpp.o
+        [ 63%] Building CXX object src/CMakeFiles/cassandra_static.dir/prepared.cpp.o
+        [ 63%] Building CXX object src/CMakeFiles/cassandra_static.dir/protocol.cpp.o
+        [ 64%] Building CXX object src/CMakeFiles/cassandra_static.dir/query_request.cpp.o
+        [ 65%] Building CXX object src/CMakeFiles/cassandra_static.dir/random.cpp.o
+        [ 66%] Building CXX object src/CMakeFiles/cassandra_static.dir/reconnection_policy.cpp.o
+        [ 67%] Building CXX object src/CMakeFiles/cassandra_static.dir/register_request.cpp.o
+        [ 67%] Building CXX object src/CMakeFiles/cassandra_static.dir/request.cpp.o
+        [ 68%] Building CXX object src/CMakeFiles/cassandra_static.dir/request_callback.cpp.o
+        [ 69%] Building CXX object src/CMakeFiles/cassandra_static.dir/request_handler.cpp.o
+        [ 70%] Building CXX object src/CMakeFiles/cassandra_static.dir/request_processor.cpp.o
+        [ 71%] Building CXX object src/CMakeFiles/cassandra_static.dir/request_processor_initializer.cpp.o
+        [ 71%] Building CXX object src/CMakeFiles/cassandra_static.dir/response.cpp.o
+        [ 72%] Building CXX object src/CMakeFiles/cassandra_static.dir/result_metadata.cpp.o
+        [ 73%] Building CXX object src/CMakeFiles/cassandra_static.dir/result_response.cpp.o
+        [ 74%] Building CXX object src/CMakeFiles/cassandra_static.dir/retry_policy.cpp.o
+        [ 75%] Building CXX object src/CMakeFiles/cassandra_static.dir/ring_buffer.cpp.o
+        [ 75%] Building CXX object src/CMakeFiles/cassandra_static.dir/round_robin_policy.cpp.o
+        [ 76%] Building CXX object src/CMakeFiles/cassandra_static.dir/row.cpp.o
+        [ 77%] Building CXX object src/CMakeFiles/cassandra_static.dir/schema_agreement_handler.cpp.o
+        [ 78%] Building CXX object src/CMakeFiles/cassandra_static.dir/session.cpp.o
+        [ 79%] Building CXX object src/CMakeFiles/cassandra_static.dir/session_base.cpp.o
+        [ 80%] Building CXX object src/CMakeFiles/cassandra_static.dir/socket.cpp.o
+        [ 80%] Building CXX object src/CMakeFiles/cassandra_static.dir/socket_connector.cpp.o
+        [ 81%] Building CXX object src/CMakeFiles/cassandra_static.dir/ssl.cpp.o
+        [ 82%] Building CXX object src/CMakeFiles/cassandra_static.dir/startup_request.cpp.o
+        [ 83%] Building CXX object src/CMakeFiles/cassandra_static.dir/statement.cpp.o
+        [ 84%] Building CXX object src/CMakeFiles/cassandra_static.dir/string_ref.cpp.o
+        [ 84%] Building CXX object src/CMakeFiles/cassandra_static.dir/supported_response.cpp.o
+        [ 85%] Building CXX object src/CMakeFiles/cassandra_static.dir/testing.cpp.o
+        [ 86%] Building CXX object src/CMakeFiles/cassandra_static.dir/timer.cpp.o
+        [ 87%] Building CXX object src/CMakeFiles/cassandra_static.dir/timestamp_generator.cpp.o
+        [ 88%] Building CXX object src/CMakeFiles/cassandra_static.dir/token_aware_policy.cpp.o
+        [ 88%] Building CXX object src/CMakeFiles/cassandra_static.dir/token_map.cpp.o
+        [ 89%] Building CXX object src/CMakeFiles/cassandra_static.dir/token_map_impl.cpp.o
+        [ 90%] Building CXX object src/CMakeFiles/cassandra_static.dir/tracing_data_handler.cpp.o
+        [ 91%] Building CXX object src/CMakeFiles/cassandra_static.dir/tuple.cpp.o
+        [ 92%] Building CXX object src/CMakeFiles/cassandra_static.dir/user_type_field_iterator.cpp.o
+        [ 92%] Building CXX object src/CMakeFiles/cassandra_static.dir/user_type_value.cpp.o
+        [ 93%] Building CXX object src/CMakeFiles/cassandra_static.dir/utils.cpp.o
+        [ 94%] Building CXX object src/CMakeFiles/cassandra_static.dir/uuids.cpp.o
+        [ 95%] Building CXX object src/CMakeFiles/cassandra_static.dir/value.cpp.o
+        [ 96%] Building CXX object src/CMakeFiles/cassandra_static.dir/wait_for_handler.cpp.o
+        [ 96%] Building CXX object src/CMakeFiles/cassandra_static.dir/whitelist_dc_policy.cpp.o
+        [ 97%] Building CXX object src/CMakeFiles/cassandra_static.dir/whitelist_policy.cpp.o
+        [ 98%] Building CXX object src/CMakeFiles/cassandra_static.dir/wkt.cpp.o
+        [ 99%] Building CXX object src/CMakeFiles/cassandra_static.dir/ssl/ssl_openssl_impl.cpp.o
+        [100%] Building CXX object src/CMakeFiles/cassandra_static.dir/ssl/ring_buffer_bio.cpp.o
+        [100%] Linking CXX static library ../libcassandra_static.a
+        [100%] Built target cassandra_static
+        [91m+ make install
+        [0m[  1%] Built target curl_hostcheck_static
+        [  2%] Built target hdr_histogram_static
+        [  4%] Built target http-parser_static
+        [  5%] Built target minizip_static
+        [100%] Built target cassandra_static
+        Install the project...
+        -- Install configuration: "RELEASE"
+        -- Installing: /tmp/php-driver-installation/build/include/cassandra.h
+        -- Installing: /tmp/php-driver-installation/build/include/dse.h
+        -- Installing: /tmp/php-driver-installation/build/lib/libcassandra_static.a
+        -- Installing: /tmp/php-driver-installation/build/lib/pkgconfig/cassandra_static.pc
+        [91m+ popd
+        + rm -Rf cpp-driver
+        [0m/tmp/php-driver-installation /usr/src/datastax-php-driver/ext
+        [91m+ rm -f build/lib/libcassandra.dylib build/lib/libcassandra.so
+        [0m[91m+ mv build/lib/libcassandra_static.a build/lib/libcassandra.a
+        [0m[91m+ popd
+        + echo 'Compiling and installing the extension...'
+        + phpize
+        [0m/usr/src/datastax-php-driver/ext
+        Compiling and installing the extension...
+        Configuring for:
+        PHP Api Version:         20180731
+        Zend Module Api No:      20180731
+        Zend Extension Api No:   320180731
+        [91m+ echo ./configure --with-cassandra=/tmp/php-driver-installation/build --with-libdir=lib
+        + LIBS='-lssl -lz -luv -lm -lstdc++'
+        + LDFLAGS=-L/tmp/php-driver-installation/build/lib
+        + ./configure --with-cassandra=/tmp/php-driver-installation/build --with-libdir=lib
+        [0m./configure --with-cassandra=/tmp/php-driver-installation/build --with-libdir=lib
+        checking for grep that handles long lines and -e... /bin/grep
+        checking for egrep... /bin/grep -E
+        checking for a sed that does not truncate output... /bin/sed
+        checking for cc... cc
+        checking whether the C compiler works... yes
+        checking for C compiler default output file name... a.out
+        checking for suffix of executables... 
+        checking whether we are cross compiling... no
+        checking for suffix of object files... o
+        checking whether we are using the GNU C compiler... yes
+        checking whether cc accepts -g... yes
+        checking for cc option to accept ISO C89... none needed
+        checking how to run the C preprocessor... cc -E
+        checking for icc... no
+        checking for suncc... no
+        checking whether cc understands -c and -o together... yes
+        checking for system library directory... lib
+        checking if compiler supports -R... no
+        checking if compiler supports -Wl,-rpath,... yes
+        checking build system type... x86_64-pc-linux-gnu
+        checking host system type... x86_64-pc-linux-gnu
+        checking target system type... x86_64-pc-linux-gnu
+        checking for PHP prefix... /usr/local
+        checking for PHP includes... -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib
+        checking for PHP extension directory... /usr/local/lib/php/extensions/no-debug-non-zts-20180731
+        checking for PHP installed headers prefix... /usr/local/include/php
+        checking if debug is enabled... no
+        checking if zts is enabled... no
+        checking for re2c... re2c
+        checking for re2c version... 1.1.1 (ok)
+        checking for gawk... no
+        checking for nawk... no
+        checking for awk... awk
+        checking if awk is broken... no
+        checking Enable Cassandra extension... yes, shared
+        checking for supported PHP version... supported (7.3.16)
+        checking libuv install dir... yes, shared
+        checking GNU MP install dir... yes, shared
+        checking for __gmp_version in -lgmp... yes
+        checking for uv_version in -luv... yes
+        checking for supported DataStax C/C++ driver version... supported (2.15.1)
+        checking for cass_cluster_new in -lcassandra... no
+        [91mconfigure: error: Unable to load libcassandra
+        [0mThe command '/bin/sh -c apk add --no-cache --virtual build-deps $BUILD_DEPS     && apk add --no-cache libuv gmp     && git clone https://github.com/datastax/php-driver.git $INSTALL_DIR     && cd $INSTALL_DIR     && git submodule update --init     && cd ext && bash $INSTALL_DIR/ext/install.sh     && docker-php-ext-enable cassandra     && apk del build-deps     && rm -rf $INSTALL_DIR' returned a non-zero code: 1
+
+    If I remove it, then I could build successfully.
+    But, when I use following command:
+
+        rm engine/settings.php
+        docker-compose down
+        docker-compose build minds_php \
+            && docker-compose build installer \
+            && docker-compose run installer
+
+    I would get following error, looks like the Cassandra driver is not installed or configured well in the Dockerfile.        
+        - Provisioning Cassandra: [29-Apr-2020 16:33:18 UTC] PHP Fatal error:  Uncaught Error: Class 'Cassandra\RetryPolicy\DowngradingConsistency' not found in /var/www/Minds/engine/Core/Data/Cassandra/Client.php:23
+        Stack trace:
+        #0 /var/www/Minds/engine/Core/Data/Client.php(35): Minds\Core\Data\Cassandra\Client->__construct(Array)
+        #1 /var/www/Minds/engine/Core/Provisioner/Provisioners/CassandraProvisioner.php(30): Minds\Core\Data\Client::build('\\Minds\\Core\\Dat...', Array)
+        #2 /var/www/Minds/engine/Core/Provisioner/Installer.php(245): Minds\Core\Provisioner\Provisioners\CassandraProvisioner->provision(false, true)
+        #3 /var/www/Minds/engine/Controllers/Cli/Install.php(68): Minds\Core\Provisioner\Installer->provisionCassandra(Object(Minds\Core\Provisioner\Provisioners\CassandraProvisioner), false, true)
+        #4 /var/www/Minds/engine/cli.php(60): Minds\Controllers\Cli\Install->exec()
+        #5 {main}
+        thrown in /var/www/Minds/engine/Core/Data/Cassandra/Client.php on line 23
+
+        Fatal error: Uncaught Error: Class 'Cassandra\RetryPolicy\DowngradingConsistency' not found in /var/www/Minds/engine/Core/Data/Cassandra/Client.php:23
+        Stack trace:
+
