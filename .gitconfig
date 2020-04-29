@@ -33,11 +33,14 @@
     ignore = composer-setup.php
     ignore = dev.gdio.diff
     ignore = engine
+    ignore = error
     ignore = fdocs.list 
     ignore = files.rev
     ignore = front
     ignore = init.sh
+    ignore = install-minds.sh
     ignore = install.sh
+    ignore = readme
     ignore = run.rsh
     ignore = run.sh
     ignore = sockets
