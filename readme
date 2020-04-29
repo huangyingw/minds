@@ -380,6 +380,27 @@ some question about engine/containers/php/Dockerfile
             && docker-compose build installer \
             && docker-compose run installer
 
+    Bellowing is the minds_php, installer section of my docker-compose.yml file:
+        minds_php:
+            build:
+            context: ./engine/containers/php
+            image: minds/php:7.3
+
+        installer:
+            build:
+            context: ./engine
+            dockerfile: ./containers/installer/Dockerfile
+            networks:
+            - app
+            volumes:
+            - ./front/:/var/www/Minds/front:delegated
+            - ./engine/:/var/www/Minds/engine:delegated
+            - keys:/.dev
+            depends_on:
+                - cassandra
+                - minds_php
+
+
     I would get following error, looks like the Cassandra driver is not installed or configured well in the Dockerfile.        
         - Provisioning Cassandra: [29-Apr-2020 16:33:18 UTC] PHP Fatal error:  Uncaught Error: Class 'Cassandra\RetryPolicy\DowngradingConsistency' not found in /var/www/Minds/engine/Core/Data/Cassandra/Client.php:23
         Stack trace:
