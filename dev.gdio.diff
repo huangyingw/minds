@@ -1,11 +1,8 @@
 diff --git a/.gitmodules b/.gitmodules
-index 7bc2effd3..50737f864 100644
+index 7bc2effd3..6cd4532fb 100644
 --- ./.gitmodules
 +++ ./.gitmodules
 @@ -1,9 +1,9 @@
-+[submodule "sockets"]
-+	path = sockets
-+	url = git@github.com:huangyingw/sockets.git
  [submodule "engine"]
  	path = engine
 -	url = https://gitlab.com/minds/engine.git
@@ -13,10 +10,11 @@ index 7bc2effd3..50737f864 100644
  [submodule "front"]
  	path = front
 -	url = https://gitlab.com/minds/front.git
--[submodule "sockets"]
--	path = sockets
--	url = https://github.com/minds/sockets.git 
 +	url = git@github.com:huangyingw/front.git
+ [submodule "sockets"]
+ 	path = sockets
+-	url = https://github.com/minds/sockets.git 
++	url = git@github.com:huangyingw/sockets.git
 diff --git a/docker-compose.with-phpspec.yml b/docker-compose.with-phpspec.yml
 index df5b038c1..c5b2f1415 100644
 --- ./docker-compose.with-phpspec.yml
