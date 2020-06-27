@@ -14,18 +14,37 @@ module.exports.handler = async argv => {
     console.log('\nWARNING: Close any tool that might be watching Minds folder (e.g. VSCode, TortoiseGit, etc.)\n');
   }
 
+  const scope = [];
+
+  if (argv.front) {
+    scope.push('front build');
+  }
+
+  if (argv.stack) {
+    scope.push('local stack');
+  }
+
+      message: `This will WIPE: [${scope.join(', ')}], if exists. Proceed?`,
   const tasks = new Listr([
     require('../tasks/stop'),
-    require('../tasks/cleanup'),
-    require('../tasks/build-front'),
-    require('../tasks/provision-elasticsearch'),
-    require('../tasks/install-minds'),
+    argv.front && require('../tasks/cleanup-front'),
+    argv.front && require('../tasks/build-front'),
+    argv.stack && require('../tasks/cleanup-stack'),
+    argv.stack && require('../tasks/provision-elasticsearch'),
+    argv.stack && require('../tasks/install-minds'),
     require('../tasks/restart'),
-  ], {
+  ].filter(Boolean), {
     renderer
   });
 
   await tasks.run();
 };
 
-module.exports.builder = {};
+module.exports.builder = {
+  front: {
+    default: true,
+  },
+  stack: {
+    default: true,
+  },
+};
