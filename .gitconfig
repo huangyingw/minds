@@ -26,7 +26,6 @@
     host = localhost
     path = ~/myproject/git/ossn/Minds/minds
 [gdif]
-    ignore = ./Minds-Install.sh
     ignore = ./etc/sysctl.conf 
     ignore = ./var/log/containner.log
     ignore = .gitignore
@@ -41,6 +40,5 @@
     ignore = install-minds.sh
     ignore = install.sh
     ignore = readme
-    ignore = run.rsh
     ignore = run.sh
     ignore = sockets
