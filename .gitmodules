@@ -1,9 +1,9 @@
-[submodule "sockets"]
-	path = sockets
-	url = git@github.com:huangyingw/sockets.git
 [submodule "engine"]
 	path = engine
 	url = git@github.com:huangyingw/engine.git
 [submodule "front"]
 	path = front
 	url = git@github.com:huangyingw/front.git
+[submodule "sockets"]
+	path = sockets
+	url = git@github.com:huangyingw/sockets.git
