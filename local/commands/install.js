@@ -24,23 +24,6 @@ module.exports.handler = async argv => {
     scope.push('local stack');
   }
 
-  const prompt = await prompts([
-    {
-      type: 'toggle',
-      name: 'confirm',
-      message: `This will WIPE: [${scope.join(', ')}], if exists. Proceed?`,
-      active: 'Yes',
-      inactive: 'No'
-    }
-  ]);
-
-  console.log('');
-
-  if (!prompt.confirm) {
-    console.log('Cancelled by user');
-    process.exit(1);
-  }
-
   const tasks = new Listr([
     require('../tasks/stop'),
     argv.front && require('../tasks/cleanup-front'),
