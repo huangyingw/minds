@@ -2518,6 +2518,7 @@
 "./engine/upgrades/JAN24-2014.php"
 "./engine/upgrades/README.txt"
 "./engine/upgrades/updateNov2013.php"
+"./engine/vendor/Minds/Surge/.git/config"
 "./engine/vendor/kramnorth/cinemr-php-sdk/.git/config"
 "./engine/vendor/minds/Surge/.git/config"
 "./engine/vendor/minds/mw3/.git/config"
