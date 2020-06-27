@@ -76,18 +76,18 @@ index 6efe4a908..ae1701f6f 100644
    elasticsearch-legacy:
      image: elasticsearch:5.6-alpine
 diff --git a/local/commands/install.js b/local/commands/install.js
-index 6c28c8069..a4d98b2ae 100644
+index fd363c7ee..00d948a5a 100644
 --- ./local/commands/install.js
 +++ ./local/commands/install.js
-@@ -14,23 +14,6 @@ module.exports.handler = async argv => {
-     console.log('\nWARNING: Close any tool that might be watching Minds folder (e.g. VSCode, TortoiseGit, etc.)\n');
+@@ -24,23 +24,6 @@ module.exports.handler = async argv => {
+     scope.push('local stack');
    }
  
 -  const prompt = await prompts([
 -    {
 -      type: 'toggle',
 -      name: 'confirm',
--      message: 'This will WIPE your local stack, if exists. Proceed?',
+-      message: `This will WIPE: [${scope.join(', ')}], if exists. Proceed?`,
 -      active: 'Yes',
 -      inactive: 'No'
 -    }
@@ -102,7 +102,7 @@ index 6c28c8069..a4d98b2ae 100644
 -
    const tasks = new Listr([
      require('../tasks/stop'),
-     require('../tasks/cleanup'),
+     argv.front && require('../tasks/cleanup-front'),
 diff --git a/local/tasks/build-containers.js b/local/tasks/build-containers.js
 index 3bfad8d0e..036a2ae3f 100644
 --- ./local/tasks/build-containers.js
