@@ -3002,6 +3002,7 @@
 "./front/src/app/common/services/feeds-update.service.ts"
 "./front/src/app/common/services/feeds.service.ts"
 "./front/src/app/common/services/form-toast.service.ts"
+"./front/src/app/common/services/headers.service.ts"
 "./front/src/app/common/services/horizontal-feed.service.ts"
 "./front/src/app/common/services/media-proxy.service.ts"
 "./front/src/app/common/services/meta.service.ts"
