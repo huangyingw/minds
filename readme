@@ -53,3 +53,5 @@ some question about engine/containers/php/Dockerfile
         Fatal error: Uncaught Error: Class 'Cassandra\RetryPolicy\DowngradingConsistency' not found in /var/www/Minds/engine/Core/Data/Cassandra/Client.php:23
         Stack trace:
 
+Hey, if this is causing an error in the installer, you can call minds install --no-front, then run npm i in the front directory and do the below.
+If you want to serve, NODE_OPTIONS=--max_old_space_size=4096 ENGINE_PORT=8080 npm run serve:dev -- --live-reload=false
