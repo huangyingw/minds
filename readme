@@ -53,3 +53,4 @@ some question about engine/containers/php/Dockerfile
         Fatal error: Uncaught Error: Class 'Cassandra\RetryPolicy\DowngradingConsistency' not found in /var/www/Minds/engine/Core/Data/Cassandra/Client.php:23
         Stack trace:
 
+local/tasks/build-front.js
