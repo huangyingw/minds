@@ -11,5 +11,3 @@ services:
       - keys:/.dev
     networks:
       - app
-    depends_on:
-      - minds_php
