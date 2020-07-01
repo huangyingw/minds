@@ -35,7 +35,6 @@ services:
       dockerfile: ./containers/php-fpm/Dockerfile.dev
     mem_limit: 512MB
     depends_on:
-      - minds_php
       - cassandra
       - mongo
       - elasticsearch
@@ -53,7 +52,6 @@ services:
       context: ./engine
       dockerfile: ./containers/php-runners/Dockerfile
     depends_on:
-      - minds_php
       - cassandra
       - elasticsearch
       - rabbitmq
@@ -109,6 +107,7 @@ services:
   elasticsearch:
     image: elasticsearch:6.6.2
     entrypoint: /set-permissions-and-start.sh
+    mem_limit: 512MB # keep an eye
     ulimits:
       nproc: 65536
       memlock:
@@ -155,8 +154,8 @@ services:
       - ./engine/:/var/www/Minds/engine:delegated
       - keys:/.dev
     depends_on:
-        - cassandra
-        - minds_php
+      cassandra:
+        condition: service_healthy
 
   elasticsearch-legacy:
     image: elasticsearch:5.6-alpine
