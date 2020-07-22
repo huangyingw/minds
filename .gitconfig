@@ -1,24 +1,22 @@
-[remote "origin"]
+[remote "minds"]
     url = git@gitlab.com:minds/minds.git
-    fetch = +refs/heads/*:refs/remotes/origin/*
-[remote "github"]
-    url = git@github.com:huangyingw/minds.git
-    fetch = +refs/heads/*:refs/remotes/github/*
+    fetch = +refs/heads/*:refs/remotes/minds/*
+[remote "origin"]
+	url = git@github.com:huangyingw/minds.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
 [push]
-    remote = github
-[gsync]
     remote = origin
+[gsync]
+    remote = minds
     branch = master
 [merge]
     allow = true
 [branch "dev"]
-    remote = github
+    remote = origin
     merge = refs/heads/dev
 [branch "master"]
-    remote = origin
+    remote = minds
     merge = refs/heads/master
-[commit]
-    message = n
 [vrun]
     silent = false
     async = false
