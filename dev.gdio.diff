@@ -1,5 +1,5 @@
 diff --git a/.gitmodules b/.gitmodules
-index 7bc2effd3..6cd4532fb 100644
+index 7bc2effd34..6cd4532fb6 100644
 --- ./.gitmodules
 +++ ./.gitmodules
 @@ -1,9 +1,9 @@
@@ -16,7 +16,7 @@ index 7bc2effd3..6cd4532fb 100644
 -	url = https://github.com/minds/sockets.git 
 +	url = git@github.com:huangyingw/sockets.git
 diff --git a/docker-compose.yml b/docker-compose.yml
-index 6efe4a908..d98e3d0c0 100644
+index 6efe4a908e..d98e3d0c0e 100644
 --- ./docker-compose.yml
 +++ ./docker-compose.yml
 @@ -24,6 +24,11 @@ services:
@@ -32,7 +32,7 @@ index 6efe4a908..d98e3d0c0 100644
      build:
        context: ./engine
 diff --git a/local/commands/install.js b/local/commands/install.js
-index fd363c7ee..00d948a5a 100644
+index fd363c7eef..00d948a5a9 100644
 --- ./local/commands/install.js
 +++ ./local/commands/install.js
 @@ -24,23 +24,6 @@ module.exports.handler = async argv => {
@@ -60,7 +60,7 @@ index fd363c7ee..00d948a5a 100644
      require('../tasks/stop'),
      argv.front && require('../tasks/cleanup-front'),
 diff --git a/local/tasks/build-containers.js b/local/tasks/build-containers.js
-index 3bfad8d0e..036a2ae3f 100644
+index 3bfad8d0e9..036a2ae3fc 100644
 --- ./local/tasks/build-containers.js
 +++ ./local/tasks/build-containers.js
 @@ -2,5 +2,5 @@ const doco = require('../lib/doco');
