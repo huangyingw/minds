@@ -32,10 +32,10 @@ index 6efe4a908..d98e3d0c0 100644
      build:
        context: ./engine
 diff --git a/local/commands/install.js b/local/commands/install.js
-index fd363c7ee..00d948a5a 100644
+index fd363c7ee..e5ca40a6a 100644
 --- ./local/commands/install.js
 +++ ./local/commands/install.js
-@@ -24,23 +24,6 @@ module.exports.handler = async argv => {
+@@ -24,26 +24,8 @@ module.exports.handler = async argv => {
      scope.push('local stack');
    }
  
@@ -58,7 +58,10 @@ index fd363c7ee..00d948a5a 100644
 -
    const tasks = new Listr([
      require('../tasks/stop'),
-     argv.front && require('../tasks/cleanup-front'),
+-    argv.front && require('../tasks/cleanup-front'),
+     argv.front && require('../tasks/build-front'),
+     argv.stack && require('../tasks/cleanup-stack'),
+     argv.stack && require('../tasks/provision-elasticsearch'),
 diff --git a/local/tasks/build-containers.js b/local/tasks/build-containers.js
 index 3bfad8d0e..036a2ae3f 100644
 --- ./local/tasks/build-containers.js
