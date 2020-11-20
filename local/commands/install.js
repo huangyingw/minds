@@ -26,7 +26,6 @@ module.exports.handler = async argv => {
 
   const tasks = new Listr([
     require('../tasks/stop'),
-    argv.front && require('../tasks/cleanup-front'),
     argv.front && require('../tasks/build-front'),
     argv.stack && require('../tasks/cleanup-stack'),
     argv.stack && require('../tasks/provision-elasticsearch'),
