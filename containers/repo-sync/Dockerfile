@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add --no-cache python py-pip && \
+RUN apk add  python py-pip && \
 	pip install awscli
 
 COPY sync.sh .
