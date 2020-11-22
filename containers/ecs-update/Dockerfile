@@ -1,6 +1,6 @@
 FROM golang:1.8-alpine
 
-RUN apk add --no-cache git
+RUN apk add  git
 
 RUN go get -u \
     github.com/aws/aws-sdk-go \
