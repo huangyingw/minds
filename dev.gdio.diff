@@ -1,5 +1,5 @@
 diff --git a/.gitmodules b/.gitmodules
-index 7bc2effd3..6cd4532fb 100644
+index 7bc2effd34..6cd4532fb6 100644
 --- ./.gitmodules
 +++ ./.gitmodules
 @@ -1,9 +1,9 @@
@@ -15,8 +15,44 @@ index 7bc2effd3..6cd4532fb 100644
  	path = sockets
 -	url = https://github.com/minds/sockets.git 
 +	url = git@github.com:huangyingw/sockets.git
+diff --git a/containers/ecs-update/Dockerfile b/containers/ecs-update/Dockerfile
+index 4fc46cdcac..8985bfbacf 100644
+--- ./containers/ecs-update/Dockerfile
++++ ./containers/ecs-update/Dockerfile
+@@ -1,6 +1,6 @@
+ FROM golang:1.8-alpine
+ 
+-RUN apk add --no-cache git
++RUN apk add  git
+ 
+ RUN go get -u \
+     github.com/aws/aws-sdk-go \
+diff --git a/containers/elasticsearch-provisioner/Dockerfile b/containers/elasticsearch-provisioner/Dockerfile
+index 9576f77155..d948690e83 100644
+--- ./containers/elasticsearch-provisioner/Dockerfile
++++ ./containers/elasticsearch-provisioner/Dockerfile
+@@ -1,6 +1,6 @@
+ FROM alpine:latest
+ 
+-RUN apk add curl docker --no-cache
++RUN apk add curl docker 
+ WORKDIR /provisioner
+ COPY wait-for.sh provision-elasticsearch.sh provision-elasticsearch-legacy.sh /provisioner/
+ COPY schema-legacy/ /provisioner/schema-legacy/
+diff --git a/containers/repo-sync/Dockerfile b/containers/repo-sync/Dockerfile
+index 897d0fe691..3f913db5e4 100644
+--- ./containers/repo-sync/Dockerfile
++++ ./containers/repo-sync/Dockerfile
+@@ -1,6 +1,6 @@
+ FROM alpine:latest
+ 
+-RUN apk add --no-cache python py-pip && \
++RUN apk add  python py-pip && \
+ 	pip install awscli
+ 
+ COPY sync.sh .
 diff --git a/docker-compose.yml b/docker-compose.yml
-index 6efe4a908..d98e3d0c0 100644
+index 6efe4a908e..9bcf293162 100644
 --- ./docker-compose.yml
 +++ ./docker-compose.yml
 @@ -24,6 +24,11 @@ services:
@@ -31,8 +67,16 @@ index 6efe4a908..d98e3d0c0 100644
    php-fpm:
      build:
        context: ./engine
+@@ -102,7 +107,6 @@ services:
+   elasticsearch:
+     image: elasticsearch:6.6.2
+     entrypoint: /set-permissions-and-start.sh
+-    mem_limit: 512MB # keep an eye
+     ulimits:
+       nproc: 65536
+       memlock:
 diff --git a/local/commands/install.js b/local/commands/install.js
-index fd363c7ee..e5ca40a6a 100644
+index fd363c7eef..e5ca40a6a5 100644
 --- ./local/commands/install.js
 +++ ./local/commands/install.js
 @@ -24,26 +24,8 @@ module.exports.handler = async argv => {
@@ -63,7 +107,7 @@ index fd363c7ee..e5ca40a6a 100644
      argv.stack && require('../tasks/cleanup-stack'),
      argv.stack && require('../tasks/provision-elasticsearch'),
 diff --git a/local/tasks/build-containers.js b/local/tasks/build-containers.js
-index 3bfad8d0e..036a2ae3f 100644
+index 3bfad8d0e9..036a2ae3fc 100644
 --- ./local/tasks/build-containers.js
 +++ ./local/tasks/build-containers.js
 @@ -2,5 +2,5 @@ const doco = require('../lib/doco');
