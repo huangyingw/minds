@@ -52,7 +52,7 @@ index 897d0fe69..3f913db5e 100644
  
  COPY sync.sh .
 diff --git a/docker-compose.yml b/docker-compose.yml
-index 6efe4a908..9bcf29316 100644
+index 6efe4a908..1d8f0cb6c 100644
 --- ./docker-compose.yml
 +++ ./docker-compose.yml
 @@ -24,6 +24,11 @@ services:
@@ -67,7 +67,15 @@ index 6efe4a908..9bcf29316 100644
    php-fpm:
      build:
        context: ./engine
-@@ -102,7 +107,6 @@ services:
+@@ -85,7 +90,6 @@ services:
+       - HEAP_NEWSIZE=512M
+     networks:
+       - app
+-    mem_limit: 1024MB
+     volumes:
+       - cassandra-data:/var/lib/cassandra
+     healthcheck:
+@@ -102,7 +106,6 @@ services:
    elasticsearch:
      image: elasticsearch:6.6.2
      entrypoint: /set-permissions-and-start.sh
@@ -75,6 +83,19 @@ index 6efe4a908..9bcf29316 100644
      ulimits:
        nproc: 65536
        memlock:
+diff --git a/local/cli.js b/local/cli.js
+index d34169055..db66d59d0 100644
+--- ./local/cli.js
++++ ./local/cli.js
+@@ -26,7 +26,7 @@ return (async () => {
+     .command(['up', 'start'], 'Start the containers', require('./commands/up'))
+     .command(['down', 'stop'], 'Stop the containers', require('./commands/down'))
+     .command('restart', 'Restart the containers', require('./commands/restart'))
+-    .command('rebuild', 'Rebuild the containers', require('./commands/rebuild'))
++    .command('build', 'Rebuild the containers', require('./commands/rebuild'))
+     .command('install', 'Installs and provisions the compose stack', require('./commands/install'))
+     .command('phpspec', 'Runs PHPSpec on a container similar to GitLab CI', require('./commands/phpspec'))
+     .demandCommand(1, 'Please, specify a command.')
 diff --git a/local/commands/install.js b/local/commands/install.js
 index fd363c7ee..1170193f3 100644
 --- ./local/commands/install.js
