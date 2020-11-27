@@ -28,6 +28,7 @@
     ignore = ./var/log/containner.log
     ignore = .gitignore
     ignore = composer-setup.php
+    ignore = debug.sh
     ignore = dev.gdio.diff
     ignore = engine
     ignore = error
