@@ -90,7 +90,6 @@ services:
       - HEAP_NEWSIZE=512M
     networks:
       - app
-    mem_limit: 1024MB
     volumes:
       - cassandra-data:/var/lib/cassandra
     healthcheck:
