@@ -75,6 +75,7 @@
 ./containers/redis/master.conf
 ./containers/repo-sync/Dockerfile
 ./containers/repo-sync/sync.sh
+./debug.sh
 ./docker-compose.with-phpspec.yml
 ./docker-compose.yml
 ./engine/.drone.yml
@@ -2579,6 +2580,7 @@
 ./engine/ruleset.xml
 ./engine/settings.example.php
 ./engine/settings.json
+./engine/settings.php
 ./engine/start.php
 ./engine/tools/setup.sh
 ./engine/translations/messages.af.xliff
@@ -5244,7 +5246,6 @@
 ./init.ps1
 ./init.sh
 ./install-minds.sh
-./install.sh
 ./languages/en.php
 ./local/.gitignore
 ./local/README.md
@@ -5288,7 +5289,6 @@
 ./prunefile.conf
 ./prunefix.conf
 ./readme
-./rsync.files
 ./run.sh
 ./setup.cfg
 ./sockets/.gitconfig
@@ -5317,6 +5317,5 @@
 ./sockets/tsconfig.json
 ./sockets/tsd.json
 ./var/log/containner.log
-./var/log/error
 ./var/log/installer.log
 ./var/log/nginx/error.log
