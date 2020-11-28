@@ -7,3 +7,6 @@
 [submodule "sockets"]
 	path = sockets
 	url = git@github.com:huangyingw/sockets.git
+[submodule "docs"]
+	path = docs
+	url = git@gitlab.com:minds/docs.git
