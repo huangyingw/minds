@@ -1,8 +1,8 @@
 diff --git a/.gitmodules b/.gitmodules
-index 7bc2effd3..6cd4532fb 100644
+index 7bc2effd3..9034a6b4a 100644
 --- ./.gitmodules
 +++ ./.gitmodules
-@@ -1,9 +1,9 @@
+@@ -1,9 +1,13 @@
  [submodule "engine"]
  	path = engine
 -	url = https://gitlab.com/minds/engine.git
@@ -15,6 +15,10 @@ index 7bc2effd3..6cd4532fb 100644
  	path = sockets
 -	url = https://github.com/minds/sockets.git 
 +	url = git@github.com:huangyingw/sockets.git
++[submodule "docs"]
++	path = docs
++	url = git@github.com:huangyingw/minds_docs.git 
++	
 diff --git a/containers/ecs-update/Dockerfile b/containers/ecs-update/Dockerfile
 index 4fc46cdca..8985bfbac 100644
 --- ./containers/ecs-update/Dockerfile
@@ -83,6 +87,13 @@ index 6efe4a908..1d8f0cb6c 100644
      ulimits:
        nproc: 65536
        memlock:
+diff --git a/docs b/docs
+new file mode 160000
+index 000000000..9fe13809a
+--- /dev/null
++++ ./docs
+@@ -0,0 +1 @@
++Subproject commit 9fe13809addde90298b5332a1ec833b935b509d7
 diff --git a/local/cli.js b/local/cli.js
 index d34169055..db66d59d0 100644
 --- ./local/cli.js
@@ -129,12 +140,14 @@ index fd363c7ee..1170193f3 100644
      argv.stack && require('../tasks/provision-elasticsearch'),
      argv.stack && require('../tasks/install-minds'),
 diff --git a/local/commands/rebuild.js b/local/commands/rebuild.js
-index 7e9b75e98..d546054c8 100644
+index 7e9b75e98..a7021c343 100644
 --- ./local/commands/rebuild.js
 +++ ./local/commands/rebuild.js
-@@ -12,6 +12,7 @@ module.exports.handler = async argv => {
+@@ -10,8 +10,8 @@ module.exports.handler = async argv => {
+   }
+ 
    const tasks = new Listr([
-     require('../tasks/stop'),
+-    require('../tasks/stop'),
      require('../tasks/build-containers'),
 +    require('../tasks/build-front'),
    ], {
