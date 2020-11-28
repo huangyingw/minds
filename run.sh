@@ -4,7 +4,7 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 cd "$SCRIPTPATH"
 
 sysctl -w vm.max_map_count=262144
-./local/local build &
+# ./local/local build &
 docker volume prune -f
 ./local/local install
 ./local/local up
