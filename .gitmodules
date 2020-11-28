@@ -9,4 +9,5 @@
 	url = git@github.com:huangyingw/sockets.git
 [submodule "docs"]
 	path = docs
-	url = git@gitlab.com:minds/docs.git
+	url = git@github.com:huangyingw/minds_docs.git 
+	
