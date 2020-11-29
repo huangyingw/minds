@@ -41,4 +41,5 @@
     ignore = logs.sh
     ignore = readme
     ignore = run.sh
+    ignore = run_front.sh
     ignore = sockets
