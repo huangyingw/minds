@@ -8,6 +8,5 @@ sysctl -w vm.max_map_count=262144
 docker volume prune -f
 ./local/local install
 ./local/local up
-# ./local/front-build
-# ./local/ssr-build
-# ./local/ssr-serve
+
+# ./run_front.sh
