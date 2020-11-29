@@ -2684,7 +2684,6 @@
 ./engine/vendor/vscn/cruftflake/.git/config
 ./engine/vendor/zircote/swagger-php/.git/config
 ./engine/welcome_complete.html 
-./error
 ./errors/500.html
 ./errors/502.html
 ./errors/503.html
@@ -5349,6 +5348,7 @@
 ./prunefix.conf
 ./readme
 ./run.sh
+./run_front.sh
 ./setup.cfg
 ./sockets/.gitconfig
 ./sockets/LICENSE
@@ -5375,6 +5375,7 @@
 ./sockets/src/server.ts
 ./sockets/tsconfig.json
 ./sockets/tsd.json
+./start.sh
 ./var/log/containner.log
 ./var/log/installer.log
 ./var/log/nginx/error.log
