@@ -4,5 +4,4 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 cd "$SCRIPTPATH"
 
 ./local/local up
-
 # ./run_front.sh
