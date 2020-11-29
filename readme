@@ -2,3 +2,9 @@ local/cli.js
 local/commands/install.js <unknown> 1 <unknown>
 engine/Core/Provisioner/Provisioners/cassandra-provision.cql
 engine/containers/installer/install.sh
+test
+localhost
+password
+expose
+./front/src/app/modules/forms/register/register.html:230:        Join Now
+front/src/app/modules/auth/register.component.ts <unknown> 92     this.redirectTo = localStorage.getItem('redirect');
