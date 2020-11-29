@@ -140,15 +140,16 @@ index fd363c7ee..1170193f3 100644
      argv.stack && require('../tasks/provision-elasticsearch'),
      argv.stack && require('../tasks/install-minds'),
 diff --git a/local/commands/rebuild.js b/local/commands/rebuild.js
-index 7e9b75e98..a7021c343 100644
+index 7e9b75e98..28fa9b830 100644
 --- ./local/commands/rebuild.js
 +++ ./local/commands/rebuild.js
-@@ -10,8 +10,8 @@ module.exports.handler = async argv => {
+@@ -10,8 +10,9 @@ module.exports.handler = async argv => {
    }
  
    const tasks = new Listr([
 -    require('../tasks/stop'),
      require('../tasks/build-containers'),
++    require('../tasks/cleanup-front'),
 +    require('../tasks/build-front'),
    ], {
      renderer
