@@ -11,6 +11,7 @@ module.exports.handler = async argv => {
 
   const tasks = new Listr([
     require('../tasks/build-containers'),
+    require('../tasks/cleanup-front'),
     require('../tasks/build-front'),
   ], {
     renderer
