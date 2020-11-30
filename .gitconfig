@@ -43,3 +43,4 @@
     ignore = run.sh
     ignore = run_front.sh
     ignore = sockets
+    ignore = start.sh
