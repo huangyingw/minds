@@ -10,3 +10,4 @@ expose
 console.log(`Node Express server listening on http://localhost:${PORT}`);
 ./front/src/app/modules/forms/register/register.html:230:        Join Now
 front/src/app/modules/auth/register.component.ts <unknown> 92     this.redirectTo = localStorage.getItem('redirect');
+4200
