@@ -910,3 +910,13 @@ Error: Cannot match any routes. URL Segment: 'assets/logos/logo.svg'
 }
 GET: /assets/logos/logo.svg: 79.692ms
 
+
+chunk {shop-module} shop-module.js, shop-module.js.map (shop-module) 317 kB  [rendered]
+chunk {styles} styles.css, styles.css.map (styles) 2.39 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 8.94 MB [initial] [rendered]
+chunk {wallet-module} wallet-module.js, wallet-module.js.map (wallet-module) 943 kB  [rendered]
+Date: 2020-11-30T21:22:52.627Z - Hash: 91d898bb541ea7a5fc24 - Time: 83792ms
+
+ERROR in ./node_modules/webpack/hot/emitter.js
+Module not found: Error: Can't resolve 'events' in '/media/nvme/myproject/git/ossn/Minds/minds/front/node_modules/webpack/hot'
+** Angular Live Development Server is listening on 0.0.0.0:4200, open your browser on http://localhost:4200/ **
