@@ -11,3 +11,27 @@ console.log(`Node Express server listening on http://localhost:${PORT}`);
 ./front/src/app/modules/forms/register/register.html:230:        Join Now
 front/src/app/modules/auth/register.component.ts <unknown> 92     this.redirectTo = localStorage.getItem('redirect');
 4200
+
+front end git bisect debug log:
+git bisect start
+# bad: [5ae75f235c144af1f0f45230e87848f053d9ef4e] n
+git bisect bad dev
+# good: [ecf99755607e2873895c2098f757c3ddb6eb98fb] Fix unsafe styling
+git bisect good ecf99755607e2873895c2098f757c3ddb6eb98fb
+# bad: [c2030cc6a50f5994ba3d334cffbe95bccaa90967] (fix): using web3modal-angular version without Ivy. Ix18n and target fix
+git bisect bad c2030cc6a50f5994ba3d334cffbe95bccaa90967
+# good: [77d3cf2dac2e89c9ef647383cbadc23774a81641] Remove translations from embed bundle
+git bisect good 77d3cf2dac2e89c9ef647383cbadc23774a81641
+# bad: [e379789518676c73fa98718801db51c992a1c71a] (fix): fix type errors for build
+git bisect bad e379789518676c73fa98718801db51c992a1c71a
+# bad: [4ce8b54ff86775528c7cd7bbe420fef1565500e0] Updated web3service
+git bisect bad 4ce8b54ff86775528c7cd7bbe420fef1565500e0
+# bad: [1d29e630b901ac2b4014b540e9e3f127712329a2] (fix): better handling/interaction for modal and lazy loading
+git bisect bad 1d29e630b901ac2b4014b540e9e3f127712329a2
+# bad: [03c9ae7212e30f2b1a99a06f5392e6ddf0d3b2f2] (fix): SkipLibCheck and fixed imports
+git bisect bad 03c9ae7212e30f2b1a99a06f5392e6ddf0d3b2f2
+# bad: [d6edcb3e9c692801f99ed38d6c3f680cbf5f8f7e] (refactor): moved web3modal into components and separated from lib files
+git bisect bad d6edcb3e9c692801f99ed38d6c3f680cbf5f8f7e
+# bad: [9c630880982017e2908f790c367bfe3bbbfaf196] (feat) Adaptation of web3modal for angular [WIP]
+git bisect bad 9c630880982017e2908f790c367bfe3bbbfaf196
+# first bad commit: [9c630880982017e2908f790c367bfe3bbbfaf196] (feat) Adaptation of web3modal for angular [WIP]
