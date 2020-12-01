@@ -89,11 +89,11 @@ index 6efe4a908e..1d8f0cb6c5 100644
        memlock:
 diff --git a/docs b/docs
 new file mode 160000
-index 0000000000..9fe13809ad
+index 0000000000..fef146617d
 --- /dev/null
 +++ ./docs
 @@ -0,0 +1 @@
-+Subproject commit 9fe13809addde90298b5332a1ec833b935b509d7
++Subproject commit fef146617d5f9ffc8d0ad029ea59036d0b242c38
 diff --git a/local/cli.js b/local/cli.js
 index d34169055a..db66d59d0e 100644
 --- ./local/cli.js
