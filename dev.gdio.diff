@@ -1,5 +1,5 @@
 diff --git a/.gitmodules b/.gitmodules
-index 7bc2effd3..9034a6b4a 100644
+index 7bc2effd34..9034a6b4a2 100644
 --- ./.gitmodules
 +++ ./.gitmodules
 @@ -1,9 +1,13 @@
@@ -20,7 +20,7 @@ index 7bc2effd3..9034a6b4a 100644
 +	url = git@github.com:huangyingw/minds_docs.git 
 +	
 diff --git a/containers/ecs-update/Dockerfile b/containers/ecs-update/Dockerfile
-index 4fc46cdca..8985bfbac 100644
+index 4fc46cdcac..8985bfbacf 100644
 --- ./containers/ecs-update/Dockerfile
 +++ ./containers/ecs-update/Dockerfile
 @@ -1,6 +1,6 @@
@@ -32,7 +32,7 @@ index 4fc46cdca..8985bfbac 100644
  RUN go get -u \
      github.com/aws/aws-sdk-go \
 diff --git a/containers/elasticsearch-provisioner/Dockerfile b/containers/elasticsearch-provisioner/Dockerfile
-index 9576f7715..d948690e8 100644
+index 9576f77155..d948690e83 100644
 --- ./containers/elasticsearch-provisioner/Dockerfile
 +++ ./containers/elasticsearch-provisioner/Dockerfile
 @@ -1,6 +1,6 @@
@@ -44,7 +44,7 @@ index 9576f7715..d948690e8 100644
  COPY wait-for.sh provision-elasticsearch.sh provision-elasticsearch-legacy.sh /provisioner/
  COPY schema-legacy/ /provisioner/schema-legacy/
 diff --git a/containers/repo-sync/Dockerfile b/containers/repo-sync/Dockerfile
-index 897d0fe69..3f913db5e 100644
+index 897d0fe691..3f913db5e4 100644
 --- ./containers/repo-sync/Dockerfile
 +++ ./containers/repo-sync/Dockerfile
 @@ -1,6 +1,6 @@
@@ -56,7 +56,7 @@ index 897d0fe69..3f913db5e 100644
  
  COPY sync.sh .
 diff --git a/docker-compose.yml b/docker-compose.yml
-index 6efe4a908..1d8f0cb6c 100644
+index 6efe4a908e..1d8f0cb6c5 100644
 --- ./docker-compose.yml
 +++ ./docker-compose.yml
 @@ -24,6 +24,11 @@ services:
@@ -89,13 +89,13 @@ index 6efe4a908..1d8f0cb6c 100644
        memlock:
 diff --git a/docs b/docs
 new file mode 160000
-index 000000000..fef146617
+index 0000000000..9fe13809ad
 --- /dev/null
 +++ ./docs
 @@ -0,0 +1 @@
-+Subproject commit fef146617d5f9ffc8d0ad029ea59036d0b242c38
++Subproject commit 9fe13809addde90298b5332a1ec833b935b509d7
 diff --git a/local/cli.js b/local/cli.js
-index d34169055..db66d59d0 100644
+index d34169055a..db66d59d0e 100644
 --- ./local/cli.js
 +++ ./local/cli.js
 @@ -26,7 +26,7 @@ return (async () => {
@@ -108,7 +108,7 @@ index d34169055..db66d59d0 100644
      .command('phpspec', 'Runs PHPSpec on a container similar to GitLab CI', require('./commands/phpspec'))
      .demandCommand(1, 'Please, specify a command.')
 diff --git a/local/commands/install.js b/local/commands/install.js
-index fd363c7ee..1170193f3 100644
+index fd363c7eef..1170193f30 100644
 --- ./local/commands/install.js
 +++ ./local/commands/install.js
 @@ -24,27 +24,8 @@ module.exports.handler = async argv => {
@@ -140,7 +140,7 @@ index fd363c7ee..1170193f3 100644
      argv.stack && require('../tasks/provision-elasticsearch'),
      argv.stack && require('../tasks/install-minds'),
 diff --git a/local/commands/rebuild.js b/local/commands/rebuild.js
-index 7e9b75e98..28fa9b830 100644
+index 7e9b75e986..28fa9b8303 100644
 --- ./local/commands/rebuild.js
 +++ ./local/commands/rebuild.js
 @@ -10,8 +10,9 @@ module.exports.handler = async argv => {
@@ -155,7 +155,7 @@ index 7e9b75e98..28fa9b830 100644
      renderer
    });
 diff --git a/local/tasks/build-containers.js b/local/tasks/build-containers.js
-index 3bfad8d0e..036a2ae3f 100644
+index 3bfad8d0e9..036a2ae3fc 100644
 --- ./local/tasks/build-containers.js
 +++ ./local/tasks/build-containers.js
 @@ -2,5 +2,5 @@ const doco = require('../lib/doco');
@@ -166,7 +166,7 @@ index 3bfad8d0e..036a2ae3f 100644
 +  task: () => doco('build')
  };
 diff --git a/local/tasks/cleanup-stack.js b/local/tasks/cleanup-stack.js
-index 64b504007..dcf550272 100644
+index 64b504007d..dcf550272d 100644
 --- ./local/tasks/cleanup-stack.js
 +++ ./local/tasks/cleanup-stack.js
 @@ -16,7 +16,6 @@ module.exports = {
