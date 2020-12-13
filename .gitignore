@@ -35,3 +35,4 @@ logs/
 .data
 !/.gitlab
 package-lock.json
+_logs/
