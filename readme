@@ -35,3 +35,11 @@ git bisect bad d6edcb3e9c692801f99ed38d6c3f680cbf5f8f7e
 # bad: [9c630880982017e2908f790c367bfe3bbbfaf196] (feat) Adaptation of web3modal for angular [WIP]
 git bisect bad 9c630880982017e2908f790c367bfe3bbbfaf196
 # first bad commit: [9c630880982017e2908f790c367bfe3bbbfaf196] (feat) Adaptation of web3modal for angular [WIP]
+
+./front/.gitlab-ci.yml
+./docker-compose.yml
+"./front/containers/ci-front/Dockerfile"
+"./front/containers/front-init/Dockerfile"
+"./front/containers/live-server-compiler/Dockerfile"
+"./front/containers/live-server/Dockerfile"
+"./front/containers/server/Dockerfile"
