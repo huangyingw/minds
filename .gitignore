@@ -36,3 +36,4 @@ logs/
 !/.gitlab
 package-lock.json
 _logs/
+tmp/
