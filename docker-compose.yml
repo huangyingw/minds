@@ -209,6 +209,7 @@ services:
         - ./var/logs/:/var/logs/
         - ./:/var/www/Minds/
         - ./_logs/:/root/.npm/_logs/
+        - ./tmp/:/tmp/
     command: /bin/sh -c "/monitor.sh 2>&1 | tee /var/logs/containner.log"
 
 volumes:
