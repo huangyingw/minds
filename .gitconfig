@@ -26,6 +26,7 @@
 [gdif]
     ignore = ./etc/sysctl.conf 
     ignore = ./var/log/containner.log
+    ignore = ./var/logs/containner.log 
     ignore = .gitignore
     ignore = composer-setup.php
     ignore = debug.sh
