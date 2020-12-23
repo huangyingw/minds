@@ -44,3 +44,14 @@ git bisect bad 9c630880982017e2908f790c367bfe3bbbfaf196
 "./front/containers/live-server/Dockerfile"
 "./front/containers/server/Dockerfile"
 
+front/node_modules/@ethersproject/web/lib.esm/geturl.js:11:import http from "http";
+
+Error on worker #2: Error: getInternalNameOfClass() called on a non-ES5 class: expected Web3ModalService to have an inner class declaration
+front/src/app/modules/blockchain/token-purchase/purchase.component.ts <unknown> 23 import { Web3ModalService } from '@mindsorg/web3modal-angular';
+front/node_modules/@angular/compiler-cli/ngcc/src/host/esm5_host.js <unknown> 88                 throw new Error("getInternalNameOfClass() called on a non-ES5 class: expected " + clazz.name.text + " to have an inner class declaration");
+
+front/containers/live-server-compiler/monitor.sh
+
+[36mnodejs_1                            |[0m Module not found: Error: Can't resolve 'crypto' in 'front/node_modules/eccrypto-js/dist/cjs/lib'
+./front/node_modules/eccrypto-js/dist/cjs/lib/node.js:6:const crypto_1 = __importDefault(require("crypto"));
+front/tsconfig.json <unknown> 24             "crypto.js": ["../node_modules/crypto-js"],
