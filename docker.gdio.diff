@@ -1,0 +1,196 @@
+diff --git a/.gitmodules b/.gitmodules
+index 7bc2effd3..9034a6b4a 100644
+--- ./.gitmodules
++++ ./.gitmodules
+@@ -1,9 +1,13 @@
+ [submodule "engine"]
+ 	path = engine
+-	url = https://gitlab.com/minds/engine.git
++	url = git@github.com:huangyingw/engine.git
+ [submodule "front"]
+ 	path = front
+-	url = https://gitlab.com/minds/front.git
++	url = git@github.com:huangyingw/front.git
+ [submodule "sockets"]
+ 	path = sockets
+-	url = https://github.com/minds/sockets.git 
++	url = git@github.com:huangyingw/sockets.git
++[submodule "docs"]
++	path = docs
++	url = git@github.com:huangyingw/minds_docs.git 
++	
+diff --git a/containers/ecs-update/Dockerfile b/containers/ecs-update/Dockerfile
+index 4fc46cdca..8985bfbac 100644
+--- ./containers/ecs-update/Dockerfile
++++ ./containers/ecs-update/Dockerfile
+@@ -1,6 +1,6 @@
+ FROM golang:1.8-alpine
+ 
+-RUN apk add --no-cache git
++RUN apk add  git
+ 
+ RUN go get -u \
+     github.com/aws/aws-sdk-go \
+diff --git a/containers/elasticsearch-provisioner/Dockerfile b/containers/elasticsearch-provisioner/Dockerfile
+index 9576f7715..d948690e8 100644
+--- ./containers/elasticsearch-provisioner/Dockerfile
++++ ./containers/elasticsearch-provisioner/Dockerfile
+@@ -1,6 +1,6 @@
+ FROM alpine:latest
+ 
+-RUN apk add curl docker --no-cache
++RUN apk add curl docker 
+ WORKDIR /provisioner
+ COPY wait-for.sh provision-elasticsearch.sh provision-elasticsearch-legacy.sh /provisioner/
+ COPY schema-legacy/ /provisioner/schema-legacy/
+diff --git a/containers/repo-sync/Dockerfile b/containers/repo-sync/Dockerfile
+index 897d0fe69..3f913db5e 100644
+--- ./containers/repo-sync/Dockerfile
++++ ./containers/repo-sync/Dockerfile
+@@ -1,6 +1,6 @@
+ FROM alpine:latest
+ 
+-RUN apk add --no-cache python py-pip && \
++RUN apk add  python py-pip && \
+ 	pip install awscli
+ 
+ COPY sync.sh .
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 6efe4a908..1d70d66cd 100644
+--- ./docker-compose.yml
++++ ./docker-compose.yml
+@@ -24,6 +24,11 @@ services:
+ 
+   ## APP ENGINE
+ 
++  minds_php:
++    build:
++      context: ./engine/containers/php
++    image: minds/php:7.3
++
+   php-fpm:
+     build:
+       context: ./engine
+@@ -85,7 +90,6 @@ services:
+       - HEAP_NEWSIZE=512M
+     networks:
+       - app
+-    mem_limit: 1024MB
+     volumes:
+       - cassandra-data:/var/lib/cassandra
+     healthcheck:
+@@ -102,7 +106,6 @@ services:
+   elasticsearch:
+     image: elasticsearch:6.6.2
+     entrypoint: /set-permissions-and-start.sh
+-    mem_limit: 512MB # keep an eye
+     ulimits:
+       nproc: 65536
+       memlock:
+@@ -199,6 +202,16 @@ services:
+     ports:
+       - "5601:5601"
+ 
++  nodejs:
++    build:
++        context: ./front/containers/live-server-compiler
++    volumes:
++        - ./var/logs/:/var/logs/
++        - ./:/var/www/Minds/
++        - ./_logs/:/root/.npm/_logs/
++        - ./tmp/:/tmp/
++    command: /bin/sh -c "/monitor.sh 2>&1 | tee /var/logs/containner.log"
++
+ volumes:
+   cassandra-data:
+   elasticsearch-data:
+diff --git a/docs b/docs
+new file mode 160000
+index 000000000..fef146617
+--- /dev/null
++++ ./docs
+@@ -0,0 +1 @@
++Subproject commit fef146617d5f9ffc8d0ad029ea59036d0b242c38
+diff --git a/local/cli.js b/local/cli.js
+index d34169055..db66d59d0 100644
+--- ./local/cli.js
++++ ./local/cli.js
+@@ -26,7 +26,7 @@ return (async () => {
+     .command(['up', 'start'], 'Start the containers', require('./commands/up'))
+     .command(['down', 'stop'], 'Stop the containers', require('./commands/down'))
+     .command('restart', 'Restart the containers', require('./commands/restart'))
+-    .command('rebuild', 'Rebuild the containers', require('./commands/rebuild'))
++    .command('build', 'Rebuild the containers', require('./commands/rebuild'))
+     .command('install', 'Installs and provisions the compose stack', require('./commands/install'))
+     .command('phpspec', 'Runs PHPSpec on a container similar to GitLab CI', require('./commands/phpspec'))
+     .demandCommand(1, 'Please, specify a command.')
+diff --git a/local/commands/install.js b/local/commands/install.js
+index fd363c7ee..1170193f3 100644
+--- ./local/commands/install.js
++++ ./local/commands/install.js
+@@ -24,27 +24,8 @@ module.exports.handler = async argv => {
+     scope.push('local stack');
+   }
+ 
+-  const prompt = await prompts([
+-    {
+-      type: 'toggle',
+-      name: 'confirm',
+-      message: `This will WIPE: [${scope.join(', ')}], if exists. Proceed?`,
+-      active: 'Yes',
+-      inactive: 'No'
+-    }
+-  ]);
+-
+-  console.log('');
+-
+-  if (!prompt.confirm) {
+-    console.log('Cancelled by user');
+-    process.exit(1);
+-  }
+-
+   const tasks = new Listr([
+     require('../tasks/stop'),
+-    argv.front && require('../tasks/cleanup-front'),
+-    argv.front && require('../tasks/build-front'),
+     argv.stack && require('../tasks/cleanup-stack'),
+     argv.stack && require('../tasks/provision-elasticsearch'),
+     argv.stack && require('../tasks/install-minds'),
+diff --git a/local/commands/rebuild.js b/local/commands/rebuild.js
+index 7e9b75e98..28fa9b830 100644
+--- ./local/commands/rebuild.js
++++ ./local/commands/rebuild.js
+@@ -10,8 +10,9 @@ module.exports.handler = async argv => {
+   }
+ 
+   const tasks = new Listr([
+-    require('../tasks/stop'),
+     require('../tasks/build-containers'),
++    require('../tasks/cleanup-front'),
++    require('../tasks/build-front'),
+   ], {
+     renderer
+   });
+diff --git a/local/tasks/build-containers.js b/local/tasks/build-containers.js
+index 3bfad8d0e..036a2ae3f 100644
+--- ./local/tasks/build-containers.js
++++ ./local/tasks/build-containers.js
+@@ -2,5 +2,5 @@ const doco = require('../lib/doco');
+ 
+ module.exports = {
+   title: 'Building containers',
+-  task: () => doco('build', '--no-cache')
++  task: () => doco('build')
+ };
+diff --git a/local/tasks/cleanup-stack.js b/local/tasks/cleanup-stack.js
+index 64b504007..dcf550272 100644
+--- ./local/tasks/cleanup-stack.js
++++ ./local/tasks/cleanup-stack.js
+@@ -16,7 +16,6 @@ module.exports = {
+       title: 'Purging containers',
+       task: () => doco('down', '-v', '--rmi=all')
+     },
+-    require('../tasks/build-containers'),
+     {
+       title: 'Pruning engine',
+       task: async (ctx, task) => {
