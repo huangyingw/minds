@@ -38,7 +38,6 @@
     ignore = front
     ignore = init.sh
     ignore = install-minds.sh
-    ignore = install.sh
     ignore = logs.sh
     ignore = readme
     ignore = run.sh
