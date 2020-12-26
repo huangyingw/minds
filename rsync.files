@@ -5148,4 +5148,4 @@
 ./sockets/tsconfig.json
 ./sockets/tsd.json
 ./start.sh
-dev.gdio.diff
+docker.gdio.diff
