@@ -155,14 +155,14 @@ index 7e9b75e98..28fa9b830 100644
      renderer
    });
 diff --git a/local/ssr-serve b/local/ssr-serve
-index 01795554e..dcb116f4b 100755
+index 01795554e..1b2334602 100755
 --- ./local/ssr-serve
 +++ ./local/ssr-serve
 @@ -1,6 +1,8 @@
  #!/usr/bin/env bash
  set -e
  
-+lsof -i:4200 | awk 'NR==2{print $2}' | xargs -n1 kill -9
++lsof -i:4200 | awk 'NR==2{print $2}' | xargs -n1 kill -9 || true
 +
  cd "$(dirname "${BASH_SOURCE[0]}")"
  
