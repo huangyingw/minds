@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-lsof -i:4200 | awk 'NR==2{print $2}' | xargs -n1 kill -9
+lsof -i:4200 | awk 'NR==2{print $2}' | xargs -n1 kill -9 || true
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
