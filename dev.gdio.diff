@@ -154,6 +154,19 @@ index 7e9b75e98..28fa9b830 100644
    ], {
      renderer
    });
+diff --git a/local/ssr-serve b/local/ssr-serve
+index 01795554e..dcb116f4b 100755
+--- ./local/ssr-serve
++++ ./local/ssr-serve
+@@ -1,6 +1,8 @@
+ #!/usr/bin/env bash
+ set -e
+ 
++lsof -i:4200 | awk 'NR==2{print $2}' | xargs -n1 kill -9
++
+ cd "$(dirname "${BASH_SOURCE[0]}")"
+ 
+ cd ../front && npx nodemon --delay 3 --watch "dist/server.js" --watch "dist/server/**/*" --ext js,mjs --exec "npm" run serve:ssr
 diff --git a/local/tasks/build-containers.js b/local/tasks/build-containers.js
 index 3bfad8d0e..036a2ae3f 100644
 --- ./local/tasks/build-containers.js
