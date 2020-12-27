@@ -58,5 +58,8 @@ front/tsconfig.json <unknown> 24             "crypto.js": ["../node_modules/cryp
 
 front/src/app/modules/auth/register.component.ts:26:export class RegisterComponent implements OnInit, OnDestroy {
 
+'username' => 'minds',
+'password' => 'Pa$$w0rd',
+
 'username' => 'admin',
 'password' => '123456',
