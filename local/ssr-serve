@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+lsof -i:4200 | awk 'NR==2{print $2}' | xargs -n1 kill -9
+
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cd ../front && npx nodemon --delay 3 --watch "dist/server.js" --watch "dist/server/**/*" --ext js,mjs --exec "npm" run serve:ssr
